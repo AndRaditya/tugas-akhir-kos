@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class KosBuktiTransferTable extends Migration
+class CreateKamarFasilitasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class KosBuktiTransferTable extends Migration
      */
     public function up()
     {
-        Schema::create('kos_bukti_transfer', function (Blueprint $table) {
+        Schema::create('kamar_fasilitas', function (Blueprint $table) {
             $table->id();
-            $table->string('photo_path', 255);
+            $table->string('name', 255);
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -28,6 +29,6 @@ class KosBuktiTransferTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('kamar_fasilitas');
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class KamarFasilitasTable extends Migration
+class CreateKosFasilitasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class KamarFasilitasTable extends Migration
      */
     public function up()
     {
-        Schema::create('kamar_fasilitas', function (Blueprint $table) {
+        Schema::create('kos_fasilitas', function (Blueprint $table) {
             $table->id();
             $table->string('name', 255);
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -28,6 +29,6 @@ class KamarFasilitasTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('kos_fasilitas');
     }
 }

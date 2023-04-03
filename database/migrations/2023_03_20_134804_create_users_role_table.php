@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class UsersRoleTable extends Migration
+class CreateUsersRoleTable extends Migration
 {
     /**
      * Run the migrations.
@@ -18,6 +18,7 @@ class UsersRoleTable extends Migration
             $table->string('name', 50);
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -28,6 +29,6 @@ class UsersRoleTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('users_role');
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class TransaksiMasukTable extends Migration
+class CreateTransaksiMasukKategoriTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,12 @@ class TransaksiMasukTable extends Migration
      */
     public function up()
     {
-        Schema::create('transaksi_masuk', function (Blueprint $table) {
+        Schema::create('transaksi_masuk_kategori', function (Blueprint $table) {
             $table->id();
-            $table->string('no', 255);
-            $table->dateTime('tanggal');
-            $table->string('desc', 255);
-            $table->float('nilai');
+            $table->string('name', 255);
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -31,6 +29,6 @@ class TransaksiMasukTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('transaksi_masuk_kategori');
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class TransaksiKeluarKategoriTable extends Migration
+class CreateKosPhotosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,13 @@ class TransaksiKeluarKategoriTable extends Migration
      */
     public function up()
     {
-        Schema::create('transaksi_keluar_kategori', function (Blueprint $table) {
+        Schema::create('kos_photos', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 255);
+            $table->integer('kos_id')->nullable();
+            $table->string('photo_path', 255);
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -28,6 +30,6 @@ class TransaksiKeluarKategoriTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('kos_photos');
     }
 }

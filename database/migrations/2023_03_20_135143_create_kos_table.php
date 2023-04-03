@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class KosTable extends Migration
+class CreateKosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,12 +15,15 @@ class KosTable extends Migration
     {
         Schema::create('kos', function (Blueprint $table) {
             $table->id();
+            $table->integer('users_id')->nullable();
+            $table->integer('kos_fasilitas_id')->nullable();
             $table->string('name', 50);
             $table->string('tipe', 50);
             $table->string('peraturan', 255);
             $table->string('deskripsi',255);
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -31,6 +34,6 @@ class KosTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('kos');
     }
 }

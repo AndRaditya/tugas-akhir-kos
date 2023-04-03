@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class KosBookingTable extends Migration
+class CreateKosBookingTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,6 +15,9 @@ class KosBookingTable extends Migration
     {
         Schema::create('kos_booking', function (Blueprint $table) {
             $table->id();
+            $table->integer('users_id')->nullable();
+            $table->integer('kamar_id')->nullable();
+            $table->integer('kos_bukti_transfer_id')->nullable();
             $table->string('kode', 255);
             $table->dateTime('date');
             $table->date('tanggal_mulai');
@@ -25,6 +28,7 @@ class KosBookingTable extends Migration
             $table->float('total_price');
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -35,6 +39,6 @@ class KosBookingTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('kos_booking');
     }
 }
