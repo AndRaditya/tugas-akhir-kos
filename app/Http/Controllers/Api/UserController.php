@@ -10,8 +10,6 @@ use DB;
 use Illuminate\Support\Facades\Schema;
 use App\Helpers\ResponseHelper;
 
-
-
 class UserController extends Controller
 {
     
