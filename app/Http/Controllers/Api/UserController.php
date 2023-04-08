@@ -67,7 +67,6 @@ class UserController extends Controller
     {
         return DB::transaction(function () use ($request, $id) {
             $result = $this->putData($id, $request, $request->only(Schema::getColumnListing('users')));
-            // dd($result);
             
             $userData = $request->_session;
             if($userData['id'] == $id){
