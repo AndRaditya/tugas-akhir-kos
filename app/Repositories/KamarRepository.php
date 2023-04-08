@@ -15,17 +15,19 @@ class KamarRepository implements Repository
         $this->kamarModel = $kamarModel;
     }
 
-    public function getWith($request){
-        dd($request);
-        // $userId = collect($request->)
-    }
-
     public function get($id){
-        return $this->kamarModel->where('id',$id)->with('user')->get();
+        return $this->kamarModel->where('id',$id)
+                    ->with('user')
+                    ->with('kamar_fasilitas')
+                    ->with('kamar_photos')
+                    ->get();
     }
 
     public function getAll(){
-        return $this->kamarModel->get();
+        return $this->kamarModel
+                    ->with('user')
+                    ->with('kamar_fasilitas')
+                    ->get();
     }
 
     public function create($data)
