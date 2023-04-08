@@ -36,6 +36,12 @@ Route::get('kamar/{id}', 'App\Http\Controllers\Api\KamarController@get');
 Route::post('kamar', 'App\Http\Controllers\Api\KamarController@create');
 Route::put('kamar/{id}', 'App\Http\Controllers\Api\KamarController@update');
 
+// KOS BOOKING
+Route::get('kos-booking', 'App\Http\Controllers\Api\KosBookingController@getAll');
+Route::get('kos-booking/{id}', 'App\Http\Controllers\Api\KosBookingController@get');
+Route::post('kos-booking', 'App\Http\Controllers\Api\KosBookingController@create');
+Route::put('kos-booking/{id}', 'App\Http\Controllers\Api\KosBookingController@update');
+
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
