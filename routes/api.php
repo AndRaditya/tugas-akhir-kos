@@ -24,12 +24,17 @@ Route::get('users/{id}', 'App\Http\Controllers\Api\UserController@get');
 Route::get('users', 'App\Http\Controllers\Api\UserController@getAll');
 Route::put('users/{id}', 'App\Http\Controllers\Api\UserController@update');
 
-
 // KOS
 Route::get('kos', 'App\Http\Controllers\Api\KosController@getAll');
 Route::get('kos/{id}', 'App\Http\Controllers\Api\KosController@get');
 Route::post('kos', 'App\Http\Controllers\Api\KosController@create');
 Route::put('kos/{id}', 'App\Http\Controllers\Api\KosController@update');
+
+// KAMAR
+Route::get('kamar', 'App\Http\Controllers\Api\KamarController@getAll');
+Route::get('kamar/{id}', 'App\Http\Controllers\Api\KamarController@get');
+Route::post('kamar', 'App\Http\Controllers\Api\KamarController@create');
+Route::put('kamar/{id}', 'App\Http\Controllers\Api\KamarController@update');
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
