@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\KosBooking;
+use App\Models\TransaksiKeluar;
+use App\Models\TransaksiMasuk;
 
 class NumberGeneratorService
 {
@@ -23,11 +25,33 @@ class NumberGeneratorService
         }
 
         if($type == 'TRSOUT'){
-            $kode = "TRSOUT-";
+            $no = "TRSOUT-";
+            $currentTime = now()->format('ymd');
+            $numberPrefix = $no.$currentTime;
+
+            $container = TransaksiKeluar::where('no','like',$numberPrefix.'%')->orderBy('no','desc')->first();
+    
+            if($container) {
+                $counter = (int)(explode($numberPrefix,$container->no)[1])+1;
+                return $numberPrefix.sprintf('%03d',$counter);
+            }
+    
+            return $numberPrefix.'001';
         }
 
         if($type == 'TRSIN'){
-            $kode = "TRSIN-";
+            $no = "TRSIN-";
+            $currentTime = now()->format('ymd');
+            $numberPrefix = $no.$currentTime;
+
+            $container = TransaksiMasuk::where('no','like',$numberPrefix.'%')->orderBy('no','desc')->first();
+    
+            if($container) {
+                $counter = (int)(explode($numberPrefix,$container->no)[1])+1;
+                return $numberPrefix.sprintf('%03d',$counter);
+            }
+    
+            return $numberPrefix.'001';
         }
     }
 }
