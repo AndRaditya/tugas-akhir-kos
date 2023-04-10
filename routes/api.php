@@ -42,11 +42,17 @@ Route::get('kos-booking/{id}', 'App\Http\Controllers\Api\KosBookingController@ge
 Route::post('kos-booking', 'App\Http\Controllers\Api\KosBookingController@create');
 Route::put('kos-booking/{id}', 'App\Http\Controllers\Api\KosBookingController@update');
 
-// KOS BOOKING
+// TRANSAKSI MASUK
 Route::get('transaksi-masuk', 'App\Http\Controllers\Api\TransaksiMasukController@getAll');
 Route::get('transaksi-masuk/{id}', 'App\Http\Controllers\Api\TransaksiMasukController@get');
 Route::post('transaksi-masuk', 'App\Http\Controllers\Api\TransaksiMasukController@create');
 Route::put('transaksi-masuk/{id}', 'App\Http\Controllers\Api\TransaksiMasukController@update');
+
+// TRANSAKSI KELUAR
+Route::get('transaksi-keluar', 'App\Http\Controllers\Api\TransaksiKeluarController@getAll');
+Route::get('transaksi-keluar/{id}', 'App\Http\Controllers\Api\TransaksiKeluarController@get');
+Route::post('transaksi-keluar', 'App\Http\Controllers\Api\TransaksiKeluarController@create');
+Route::put('transaksi-keluar/{id}', 'App\Http\Controllers\Api\TransaksiKeluarController@update');
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
