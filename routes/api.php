@@ -18,41 +18,41 @@ use Illuminate\Support\Facades\Route;
 
 
 //USER
-Route::post('login', 'App\Http\Controllers\Api\UserController@login');
-Route::post('users', 'App\Http\Controllers\Api\UserController@create');
-Route::get('users/{id}', 'App\Http\Controllers\Api\UserController@get');
-Route::get('users', 'App\Http\Controllers\Api\UserController@getAll');
-Route::put('users/{id}', 'App\Http\Controllers\Api\UserController@update');
+Route::post('login', 'Api\UserController@login');
+Route::post('users', 'Api\UserController@create');
+Route::get('users/{id}', 'Api\UserController@get');
+Route::get('users', 'Api\UserController@getAll');
+Route::put('users/{id}', 'Api\UserController@update');
 
 // KOS
-Route::get('kos', 'App\Http\Controllers\Api\KosController@getAll');
-Route::get('kos/{id}', 'App\Http\Controllers\Api\KosController@get');
-Route::post('kos', 'App\Http\Controllers\Api\KosController@create');
-Route::put('kos/{id}', 'App\Http\Controllers\Api\KosController@update');
+Route::get('kos', 'Api\KosController@getAll');
+Route::get('kos/{id}', 'Api\KosController@get');
+Route::post('kos', 'Api\KosController@create');
+Route::put('kos/{id}', 'Api\KosController@update');
 
 // KAMAR
-Route::get('kamar', 'App\Http\Controllers\Api\KamarController@getAll');
-Route::get('kamar/{id}', 'App\Http\Controllers\Api\KamarController@get');
-Route::post('kamar', 'App\Http\Controllers\Api\KamarController@create');
-Route::put('kamar/{id}', 'App\Http\Controllers\Api\KamarController@update');
+Route::get('kamar', 'Api\KamarController@getAll');
+Route::get('kamar/{id}', 'Api\KamarController@get');
+Route::post('kamar', 'Api\KamarController@create');
+Route::put('kamar/{id}', 'Api\KamarController@update');
 
 // KOS BOOKING
-Route::get('kos-booking', 'App\Http\Controllers\Api\KosBookingController@getAll');
-Route::get('kos-booking/{id}', 'App\Http\Controllers\Api\KosBookingController@get');
-Route::post('kos-booking', 'App\Http\Controllers\Api\KosBookingController@create');
-Route::put('kos-booking/{id}', 'App\Http\Controllers\Api\KosBookingController@update');
+Route::get('kos-booking', 'Api\KosBookingController@getAll');
+Route::get('kos-booking/{id}', 'Api\KosBookingController@get');
+Route::post('kos-booking', 'Api\KosBookingController@create');
+Route::put('kos-booking/{id}', 'Api\KosBookingController@update');
 
 // TRANSAKSI MASUK
-Route::get('transaksi-masuk', 'App\Http\Controllers\Api\TransaksiMasukController@getAll');
-Route::get('transaksi-masuk/{id}', 'App\Http\Controllers\Api\TransaksiMasukController@get');
-Route::post('transaksi-masuk', 'App\Http\Controllers\Api\TransaksiMasukController@create');
-Route::put('transaksi-masuk/{id}', 'App\Http\Controllers\Api\TransaksiMasukController@update');
+Route::get('transaksi-masuk', 'Api\TransaksiMasukController@getAll');
+Route::get('transaksi-masuk/{id}', 'Api\TransaksiMasukController@get');
+Route::post('transaksi-masuk', 'Api\TransaksiMasukController@create');
+Route::put('transaksi-masuk/{id}', 'Api\TransaksiMasukController@update');
 
 // TRANSAKSI KELUAR
-Route::get('transaksi-keluar', 'App\Http\Controllers\Api\TransaksiKeluarController@getAll');
-Route::get('transaksi-keluar/{id}', 'App\Http\Controllers\Api\TransaksiKeluarController@get');
-Route::post('transaksi-keluar', 'App\Http\Controllers\Api\TransaksiKeluarController@create');
-Route::put('transaksi-keluar/{id}', 'App\Http\Controllers\Api\TransaksiKeluarController@update');
+Route::get('transaksi-keluar', 'Api\TransaksiKeluarController@getAll');
+Route::get('transaksi-keluar/{id}', 'Api\TransaksiKeluarController@get');
+Route::post('transaksi-keluar', 'Api\TransaksiKeluarController@create');
+Route::put('transaksi-keluar/{id}', 'Api\TransaksiKeluarController@update');
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
