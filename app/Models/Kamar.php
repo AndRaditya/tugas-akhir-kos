@@ -9,11 +9,6 @@ class Kamar extends Model
 {
     protected $guarded = ["id"];
 
-    public function user()
-    {
-        return $this->hasOne(User::class);
-    }
-
     public function kamar_photos()
     {
         return $this->hasMany(KamarPhotos::class);

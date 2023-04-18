@@ -21,7 +21,6 @@ class TransaksiMasukRepository implements Repository
                     ->with('biaya_tambahan')
                     ->with('bukti_transfer')
                     ->with('kos_booking')
-                    ->with('kamar')
                     ->where('id',$id)->get();
     }
 

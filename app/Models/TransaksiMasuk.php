@@ -30,9 +30,4 @@ class TransaksiMasuk extends Model
         return $this->hasOne(KosBooking::class,'id', 'kos_booking_id');
     }
 
-    public function kamar()
-    {
-        return $this->hasOne(Kamar::class,'id', 'kamar_id');
-    }
-
 }

@@ -17,7 +17,6 @@ class KamarRepository implements Repository
 
     public function get($id){
         return $this->kamarModel->where('id',$id)
-                    ->with('user')
                     ->with('kamar_fasilitas')
                     ->with('kamar_photos')
                     ->get();
@@ -25,7 +24,6 @@ class KamarRepository implements Repository
 
     public function getAll(){
         return $this->kamarModel
-                    ->with('user')
                     ->with('kamar_fasilitas')
                     ->get();
     }
