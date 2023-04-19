@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 
 //USER
 Route::post('login', 'Api\UserController@login');
-Route::post('users', 'Api\UserController@create');
+Route::post('register', 'Api\UserController@create');
 Route::get('users/{id}', 'Api\UserController@get');
 Route::get('users', 'Api\UserController@getAll');
 Route::put('users/{id}', 'Api\UserController@update');

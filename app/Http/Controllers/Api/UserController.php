@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use DB;
 use Illuminate\Support\Facades\Schema;
 use App\Helpers\ResponseHelper;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -57,6 +58,8 @@ class UserController extends Controller
     public function create(request $request){
         return DB::transaction(function () use ($request){
             $data = $request->only(Schema::getColumnListing('users'));
+            $hashPassword = Hash::make($data['password']);
+            $data['password'] = $hashPassword;
             $data['roles_id'] = 2;
             $userQuery = $this->userService->create($data);
             return ResponseHelper::create($userQuery);
