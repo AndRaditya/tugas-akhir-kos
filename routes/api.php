@@ -22,7 +22,9 @@ Route::post('login', 'Api\UserController@login');
 Route::post('register', 'Api\UserController@create');
 Route::get('users/{id}', 'Api\UserController@get');
 Route::get('users', 'Api\UserController@getAll');
+Route::get('users-pengelola', 'Api\UserController@getPengelola');
 Route::put('users/{id}', 'Api\UserController@update');
+Route::put('users', 'Api\UserController@changePassword');
 
 // KOS
 Route::get('kos', 'Api\KosController@getAll');
@@ -33,6 +35,7 @@ Route::put('kos/{id}', 'Api\KosController@update');
 // KAMAR
 Route::get('kamar', 'Api\KamarController@getAll');
 Route::get('kamar/{id}', 'Api\KamarController@get');
+Route::get('kamar-kosong', 'Api\KamarController@getKamarKosong');
 Route::post('kamar', 'Api\KamarController@create');
 Route::put('kamar/{id}', 'Api\KamarController@update');
 
@@ -41,6 +44,8 @@ Route::get('kos-booking', 'Api\KosBookingController@getAll');
 Route::get('kos-booking/{id}', 'Api\KosBookingController@get');
 Route::post('kos-booking', 'Api\KosBookingController@create');
 Route::put('kos-booking/{id}', 'Api\KosBookingController@update');
+Route::get('kos-booking-users/{id}', 'Api\KosBookingController@getByUser');
+Route::put('kos-booking-pembayaran/{id}', 'Api\KosBookingController@pembayaran');
 
 // TRANSAKSI MASUK
 Route::get('transaksi-masuk', 'Api\TransaksiMasukController@getAll');

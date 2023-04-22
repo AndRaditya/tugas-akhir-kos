@@ -55,6 +55,39 @@ class UserController extends Controller
         return ResponseHelper::get($result);
     }
 
+    public function getPengelola()
+    {
+        $result = $this->userService->getPengelola();
+        return ResponseHelper::get($result);
+    }
+
+    public function changePassword(Request $request)
+    {
+        $permited = true;
+  
+        if ($permited) {
+            $isSuccess = $this->userService->changePassword(
+                $request->id,
+                $request->newPassword,
+                $request->oldPassword
+            );
+            if (!$isSuccess) {
+                return response()->json([
+                    'api_status' => "fail",
+                    'message' => 'Your old Password mismatch!!'
+                ]);
+            }
+            return response()->json([
+                'api_status' => "success",
+                'message' => 'Your Password updated!!'
+            ]);
+        }
+        return response()->json([
+            'api_status' => "fail",
+            'message' => 'You are unauthorized!!'
+        ]);
+    }
+
     public function create(request $request){
         return DB::transaction(function () use ($request){
             $data = $request->only(Schema::getColumnListing('users'));

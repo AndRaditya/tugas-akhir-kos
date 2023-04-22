@@ -23,6 +23,14 @@ class UserRepository implements Repository
     public function get($user_id){
       	return $this->userModel->where('id',$user_id)->get();
     }
+    
+    public function getPengelola(){
+      	return $this->userModel->where('roles_id', 1)->first();
+    }
+
+    public function getPassword($user_id){
+      	return $this->userModel->where('id',$user_id)->select('password')->get();
+    }
 
     public function getAll(){
       	return $this->userModel->get();

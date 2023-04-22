@@ -29,6 +29,13 @@ class KosBookingRepository implements Repository
                     ->get();
     }
 
+    public function getByUser($user_id){
+        return $this->kosBookingModel->where('users_id',$user_id)
+                    ->with('user')
+                    ->with('kamar')
+                    ->get();
+    }
+
     public function create($data)
     {
         return $this->kosBookingModel::create($data)->id;
