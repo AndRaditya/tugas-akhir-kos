@@ -27,6 +27,12 @@ class KamarRepository implements Repository
                     ->with('kamar_fasilitas')
                     ->get();
     }
+    
+    public function getKamarKosong(){
+        return $this->kamarModel
+                    ->where('status', '=', 'Kosong')
+                    ->get();
+    }
 
     public function create($data)
     {

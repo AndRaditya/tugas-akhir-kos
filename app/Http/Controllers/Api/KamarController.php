@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Helpers\ResponseHelper;
 use App\Services\KamarService;
+
+
 use DB;
 use Illuminate\Support\Facades\Schema;
 
@@ -31,6 +33,12 @@ class KamarController extends Controller
         return ResponseHelper::get($result);
     }
 
+    public function getKamarKosong()
+    {
+        $result = $this->kamarService->getKamarKosong();
+        return ResponseHelper::get($result);
+    }
+
     public function create(request $request){
         return DB::transaction(function () use ($request){
             $data = $request->only(Schema::getColumnListing('kamars'));
@@ -46,6 +54,16 @@ class KamarController extends Controller
             $request['updated_at'] = now();
 
             $container = $this->kamarService->update($id, $request);
+
+            return ResponseHelper::put($container);
+        });
+    }
+
+    public function updateStatusKamar($data){
+        return DB::transaction(function () use ($data) {
+            $data['updated_at'] = now();
+            
+            $container = $this->kamarService->update($data['id'], $data);
 
             return ResponseHelper::put($container);
         });
