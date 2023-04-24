@@ -19,17 +19,16 @@ class FileHandlerService
             }
         }else{
             $extString = explode(';', $fileString);
-            // error_log($extString[0]);
+            error_log($extString[0]);
             $ext = explode('/',$extString[0]);
-            // error_log($ext[1]);
-            $fileName = $this->generateNameFile().".".$ext[0];
-            // $fileName = $ext[0];
+            error_log($ext[1]);
+            $fileName = $this->generateNameFile().".".$ext[1];
         }
         $file = Explode(',',$fileString);
         $path = $folder."/".$fileName;
 
         
-        Storage::put("/public/".$path,base64_decode($file[0]),'public');
+        Storage::put("/public/".$path,base64_decode($file[1]),'public');
 
         return URL::to('/storage/'.$path);
     } 

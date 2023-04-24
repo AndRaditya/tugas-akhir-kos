@@ -45,7 +45,7 @@ Route::get('kos-booking/{id}', 'Api\KosBookingController@get');
 Route::post('kos-booking', 'Api\KosBookingController@create');
 Route::put('kos-booking/{id}', 'Api\KosBookingController@update');
 Route::get('kos-booking-users/{id}', 'Api\KosBookingController@getByUser');
-Route::put('kos-booking-pembayaran/{id}', 'Api\KosBookingController@pembayaran');
+Route::post('kos-booking-pembayaran/{id}', 'Api\KosBookingController@pembayaran');
 
 // TRANSAKSI MASUK
 Route::get('transaksi-masuk', 'Api\TransaksiMasukController@getAll');
