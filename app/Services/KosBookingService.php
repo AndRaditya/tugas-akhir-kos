@@ -43,12 +43,11 @@ class KosBookingService
         $folder = "bukti_transfer/".$kode;
         KosBuktiTransfer::where('kos_booking_id', $kos_booking_id)->delete();
 
-        // foreach ($images as $image) {
-            $data['kos_booking_id'] = $kos_booking_id;
-            $data['photo_path'] = $this->fileHandlerService->storage($images, $folder);
-            // $data['photo_path'] = $images->store('bukti_transfer', ['disk' => 'public']);
-            KosBuktiTransfer::create($data);
-        // }
+        $data['kos_booking_id'] = $kos_booking_id;
+        $data['photo_path'] = $this->fileHandlerService->storage($images, $folder);
+
+        KosBuktiTransfer::create($data);
+ 
     }
 
     public function create($data) {        

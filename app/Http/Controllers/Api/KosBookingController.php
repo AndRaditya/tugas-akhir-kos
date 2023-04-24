@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Schema;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage; 
 use App\Models\Kamar;
+use Illuminate\Support\Facades\Validator;
+
 
 class KosBookingController extends Controller
 {
@@ -98,30 +100,13 @@ class KosBookingController extends Controller
     public function pembayaran($id, Request $request)
     {
         return DB::transaction(function () use ($id, $request) {
-            // $bukti_transfer = $request['bukti_transfer']->store('bukti_transfer', ['disk' => 'public']);
-            $bukti_transfer = $request['bukti_transfer'];
-            $kode = $request['kode'];
-
-            // dd($bukti_transfer);
+            $bukti_transfer = $request->bukti_transfer;
+            $kode = $request->kode;
             
-            $request = $request->only(Schema::getColumnListing('kos_bookings'));
+            if($bukti_transfer){
+                $this->kosBookingService->insertBuktiTransfer($bukti_transfer, $id, $kode);
+            }
 
-            $request['updated_at'] = now();
-            $request['status'] = 'Menunggu Konfirmasi Pembayaran';
-            
-            Storage::put("/public/bukti_transfer",base64_decode($bukti_transfer),'public');
-            // Storage::put('/avatar', $bukti_transfer);
-
-
-            $container = $this->kosBookingService->update($id, $request);
-
-            // if($bukti_transfer){
-                // $this->kosBookingService->insertBuktiTransfer($bukti_transfer, $id, $kode);
-            // }
-
-            
-
-            return ResponseHelper::put($container);
         });
     }
 
