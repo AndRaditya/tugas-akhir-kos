@@ -38,6 +38,7 @@ Route::get('kamar/{id}', 'Api\KamarController@get');
 Route::get('kamar-kosong', 'Api\KamarController@getKamarKosong');
 Route::post('kamar', 'Api\KamarController@create');
 Route::put('kamar/{id}', 'Api\KamarController@update');
+Route::delete('kamar/{id}', 'Api\KamarController@delete');
 
 // KOS BOOKING
 Route::get('kos-booking', 'Api\KosBookingController@getAll');

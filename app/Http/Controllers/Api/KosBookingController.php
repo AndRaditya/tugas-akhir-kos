@@ -15,7 +15,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage; 
 use App\Models\Kamar;
 use Illuminate\Support\Facades\Validator;
-
+use App\Models\User;
 
 class KosBookingController extends Controller
 {
@@ -82,13 +82,15 @@ class KosBookingController extends Controller
             if($nomor_kamar && $request['status'] != 'Dibatalkan'){
                 $data = [];
                 
-                // $data['id'] = $request['kamar_id'];
                 $data['number'] = $nomor_kamar;
-                $data['users_id'] = $request['users_id'];
                 $data['status'] = 'Dipakai';
                 $kamar_id = Kamar::where('number', $data['number'])->select('id')->first();
                 $data['id'] = $kamar_id['id'];
                 $request['kamar_id'] = $kamar_id['id'];
+
+                $nama_user = User::where('id', $data['users_id'])->select('name')->first();
+
+                $data['nama_penyewa'] = $nama_user->name;
 
                 $this->kamarController->updateStatusKamar($data);
             }
