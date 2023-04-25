@@ -34,6 +34,12 @@ class KamarRepository implements Repository
                     ->get();
     }
 
+    public function getKamarDipakai(){
+        return $this->kamarModel
+                    ->where('status', '=', 'Dipakai')
+                    ->get();
+    }
+
     public function create($data)
     {
         return $this->kamarModel::create($data)->id;
