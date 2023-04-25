@@ -53,12 +53,14 @@ Route::get('transaksi-masuk', 'Api\TransaksiMasukController@getAll');
 Route::get('transaksi-masuk/{id}', 'Api\TransaksiMasukController@get');
 Route::post('transaksi-masuk', 'Api\TransaksiMasukController@create');
 Route::put('transaksi-masuk/{id}', 'Api\TransaksiMasukController@update');
+Route::delete('transaksi-masuk/{id}', 'Api\TransaksiMasukController@delete');
 
 // TRANSAKSI KELUAR
 Route::get('transaksi-keluar', 'Api\TransaksiKeluarController@getAll');
 Route::get('transaksi-keluar/{id}', 'Api\TransaksiKeluarController@get');
 Route::post('transaksi-keluar', 'Api\TransaksiKeluarController@create');
 Route::put('transaksi-keluar/{id}', 'Api\TransaksiKeluarController@update');
+Route::delete('transaksi-keluar/{id}', 'Api\TransaksiKeluarController@delete');
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
