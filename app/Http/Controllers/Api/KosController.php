@@ -8,15 +8,21 @@ use App\Http\Controllers\Controller;
 use App\Helpers\ResponseHelper;
 use DB;
 use Illuminate\Support\Facades\Schema;
-
+use App\Http\Controllers\Api\KamarSpesifikasiController;
+use App\Http\Controllers\Api\KosFasilitasController;
+use Illuminate\Support\Facades\Storage;
 
 class KosController extends Controller
 {
     private $kosService;
+    private $kamarSpesifikasiController;
+    private $kosFasilitasController;
 
-    public function __construct(KosService $kosService)
+    public function __construct(KosService $kosService, KamarSpesifikasiController $kamarSpesifikasiController, KosFasilitasController $kosFasilitasController)
     {
         $this->kosService = $kosService;
+        $this->kamarSpesifikasiController = $kamarSpesifikasiController;
+        $this->kosFasilitasController = $kosFasilitasController;
     }
 
     public function getAll()
@@ -32,7 +38,7 @@ class KosController extends Controller
         return ResponseHelper::get($result);
     }
 
-    public function create(request $request){
+    public function create(Request $request){
         return DB::transaction(function () use ($request){
             $data = $request->only(Schema::getColumnListing('kos'));
             $kosQuery = $this->kosService->create($data);
@@ -43,9 +49,29 @@ class KosController extends Controller
     public function update($id, Request $request)
     {
         return DB::transaction(function () use ($id, $request) {
+            $kamarSpecs = $request['kamar_spesifikasi'];
+            $fasilitas = $request['kos_fasilitas'];
+            $kos_photos = $request['kos_photos'];
+
+            if(count($kos_photos) > 0){
+                $this->kosService->insertKosPhotos($kos_photos, $id);
+            }
+
             $request = $request->only(Schema::getColumnListing('kos'));
             $request['updated_at'] = now();
 
+            
+            $this->kamarSpesifikasiController->deleteSelected($id);
+            $this->kosFasilitasController->deleteSelected($id);
+            
+            foreach($kamarSpecs as $kamarSpec){
+                $this->kamarSpesifikasiController->create($kamarSpec, $id);
+            } 
+            
+            foreach($fasilitas as $eachFasilitas){
+                $this->kosFasilitasController->create($eachFasilitas, $id);
+            } 
+              
             $container = $this->kosService->update($id, $request);
 
             return ResponseHelper::put($container);
@@ -57,5 +83,27 @@ class KosController extends Controller
         $this->kosService->delete($id);
         return ResponseHelper::delete();
     }
+    
+    public function deleteKosPhotos($id, Request $request)
+    {
+        $photo = $request->kos_photos;
+        if ($photo) {
+            return $this->kosService->deleteKosPhotos($id, $photo);
+        }
+    }
+
+    // public function getPhotos(Request $request){
+    //     // $photo_path = 'http:://' . env('DB_HOST') . '/storage/kos_photos/2/01cec8110aab2eaf88a6ba0cb6bf6b65.jpeg';
+    //     // $photo_path = asset(public_path().'/storage/kos_photos/2/01cec8110aab2eaf88a6ba0cb6bf6b65.jpeg');
+
+    //     $path = '/storage/kos_photos/2/01cec8110aab2eaf88a6ba0cb6bf6b65.jpeg';
+
+    //     $image = Storage::get($path);
+
+    //     return response($image, 200)->header('Content-Type', Storage::getMimeType($path));
+
+    //     // return $photo_path;
+    // }
+
 
 }
