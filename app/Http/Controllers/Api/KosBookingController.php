@@ -58,11 +58,15 @@ class KosBookingController extends Controller
             $total_kamar = $data['total_kamar'];
             $tanggal_selesai = $tanggal_mulai->addMonths($total_bulan);
 
+            $tanggal_booking = Carbon::now();
+            $tanggal_expired = Carbon::now()->addDays(1);
+
             $harga_utama = 1500000;
             $total_harga = $harga_utama * $total_bulan * $total_kamar;
 
             $data['tanggal_selesai'] = $tanggal_selesai;
-            $data['date'] = Carbon::now();
+            $data['date'] = $tanggal_booking;
+            $data['exp_date'] = $tanggal_expired;
             $data['status'] = "Menunggu Konfirmasi Kamar";
             $data['total_price'] = $total_harga;
             $data['kode'] = $this->numberGeneratorService->generateNumber('BOOK');

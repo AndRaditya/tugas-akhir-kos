@@ -13,8 +13,6 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-// Route::get('users/{id}', 'Api\UserController@get');
-// Route::get('users', 'Api\UserController@getAll');
 
 
 //USER
@@ -31,6 +29,9 @@ Route::get('kos', 'Api\KosController@getAll');
 Route::get('kos/{id}', 'Api\KosController@get');
 Route::post('kos', 'Api\KosController@create');
 Route::put('kos/{id}', 'Api\KosController@update');
+Route::put('kos-photos/{id}', 'Api\KosController@deleteKosPhotos');
+
+Route::get('kos-photos', 'Api\KosController@getPhotos');
 
 // KAMAR
 Route::get('kamar', 'Api\KamarController@getAll');
@@ -61,6 +62,10 @@ Route::get('transaksi-keluar/{id}', 'Api\TransaksiKeluarController@get');
 Route::post('transaksi-keluar', 'Api\TransaksiKeluarController@create');
 Route::put('transaksi-keluar/{id}', 'Api\TransaksiKeluarController@update');
 Route::delete('transaksi-keluar/{id}', 'Api\TransaksiKeluarController@delete');
+
+// KOS FASILITAS
+Route::get('kos-fasilitas', 'Api\KosFasilitasController@getAll');
+
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
