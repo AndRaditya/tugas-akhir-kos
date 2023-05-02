@@ -23,7 +23,7 @@ class KosBooking extends Model
 
     public function bukti_transfer()
     {
-        return $this->hasOne(KosBuktiTransfer::class,'kos_bukti_transfer_id','id');
+        return $this->hasOne(KosBuktiTransfer::class);
     }
 
 

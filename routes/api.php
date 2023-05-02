@@ -56,12 +56,16 @@ Route::post('transaksi-masuk', 'Api\TransaksiMasukController@create');
 Route::put('transaksi-masuk/{id}', 'Api\TransaksiMasukController@update');
 Route::delete('transaksi-masuk/{id}', 'Api\TransaksiMasukController@delete');
 
+Route::get('transaksi-masuk-kategori', 'Api\TransaksiMasukKategoriController@getDataList');
+
 // TRANSAKSI KELUAR
 Route::get('transaksi-keluar', 'Api\TransaksiKeluarController@getAll');
 Route::get('transaksi-keluar/{id}', 'Api\TransaksiKeluarController@get');
 Route::post('transaksi-keluar', 'Api\TransaksiKeluarController@create');
 Route::put('transaksi-keluar/{id}', 'Api\TransaksiKeluarController@update');
 Route::delete('transaksi-keluar/{id}', 'Api\TransaksiKeluarController@delete');
+
+Route::get('transaksi-keluar-kategori', 'Api\TransaksiKeluarKategoriController@getDataList');
 
 // KOS FASILITAS
 Route::get('kos-fasilitas', 'Api\KosFasilitasController@getAll');

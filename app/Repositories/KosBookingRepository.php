@@ -19,6 +19,7 @@ class KosBookingRepository implements Repository
         return $this->kosBookingModel->where('id',$id)
                     ->with('user')
                     ->with('kamar')
+                    ->with('bukti_transfer')
                     ->get();
     }
 

@@ -25,7 +25,10 @@ class TransaksiMasukRepository implements Repository
     }
 
     public function getAll(){
-        return $this->transaksiMasukModel->get();
+        return $this->transaksiMasukModel
+                        ->with('transaksi_masuk_kategori')
+                        ->with('biaya_tambahan')
+                        ->get();
     }
 
     public function create($data)

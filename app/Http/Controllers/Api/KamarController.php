@@ -6,18 +6,19 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Helpers\ResponseHelper;
 use App\Services\KamarService;
-
-
+use App\Http\Controllers\Api\KamarFasilitasController;
 use DB;
 use Illuminate\Support\Facades\Schema;
 
 class KamarController extends Controller
 {
     private $kamarService;
+    private $kamarFasilitasController;
 
-    public function __construct(KamarService $kamarService)
+    public function __construct(KamarService $kamarService, KamarFasilitasController $kamarFasilitasController)
     {
         $this->kamarService = $kamarService;
+        $this->kamarFasilitasController = $kamarFasilitasController;
     }
 
     public function getAll()
@@ -47,18 +48,44 @@ class KamarController extends Controller
 
     public function create(request $request){
         return DB::transaction(function () use ($request){
+            $kamar_photos = $request['kamar_photos'];
+            $kamar_fasilitas = $request['kamar_fasilitas'];
+
             $data = $request->only(Schema::getColumnListing('kamars'));
-            $kamarQuery = $this->kamarService->create($data);
-            return ResponseHelper::create($kamarQuery);
+
+            $kamar_id = $this->kamarService->create($data);
+            
+            foreach($kamar_fasilitas as $kamar_fasilitas_each){
+                $this->kamarFasilitasController->create($kamar_fasilitas_each, $kamar_id);
+            } 
+
+            if(count($kamar_photos) > 0){
+                $this->kamarService->insertKamarPhotos($kamar_photos, $kamar_id);
+            }
+
+            return ResponseHelper::create($kamar_id);
         });
     }
 
     public function update($id, Request $request)
     {
         return DB::transaction(function () use ($id, $request) {
+            $kamar_photos = $request['kamar_photos'];
+            $kamar_fasilitas = $request['kamar_fasilitas'];
+
             $request = $request->only(Schema::getColumnListing('kamars'));
             $request['updated_at'] = now();
 
+            $this->kamarFasilitasController->deleteSelected($id);
+            
+            foreach($kamar_fasilitas as $kamar_fasilitas_each){
+                $this->kamarFasilitasController->create($kamar_fasilitas_each, $id);
+            } 
+
+            if(count($kamar_photos) > 0){
+                $this->kamarService->insertKamarPhotos($kamar_photos, $id);
+            }
+            
             $container = $this->kamarService->update($id, $request);
 
             return ResponseHelper::put($container);
@@ -78,6 +105,14 @@ class KamarController extends Controller
     {
         $this->kamarService->delete($id);
         return ResponseHelper::delete();
+    }
+
+    public function deleteKosPhotos($id, Request $request)
+    {
+        $photo = $request->kos_photos;
+        if ($photo) {
+            return $this->kosService->deleteKosPhotos($id, $photo);
+        }
     }
 
 
