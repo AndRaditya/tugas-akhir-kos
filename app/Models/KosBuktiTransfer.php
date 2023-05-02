@@ -16,4 +16,9 @@ class KosBuktiTransfer extends Model
     {
         return $this->belongsTo(KosBooking::class);
     }
+    
+    public function transaksi_masuk()
+    {
+        return $this->belongsTo(TransaksiMasuk::class);
+    }
 }

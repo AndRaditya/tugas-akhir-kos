@@ -91,19 +91,4 @@ class KosController extends Controller
             return $this->kosService->deleteKosPhotos($id, $photo);
         }
     }
-
-    // public function getPhotos(Request $request){
-    //     // $photo_path = 'http:://' . env('DB_HOST') . '/storage/kos_photos/2/01cec8110aab2eaf88a6ba0cb6bf6b65.jpeg';
-    //     // $photo_path = asset(public_path().'/storage/kos_photos/2/01cec8110aab2eaf88a6ba0cb6bf6b65.jpeg');
-
-    //     $path = '/storage/kos_photos/2/01cec8110aab2eaf88a6ba0cb6bf6b65.jpeg';
-
-    //     $image = Storage::get($path);
-
-    //     return response($image, 200)->header('Content-Type', Storage::getMimeType($path));
-
-    //     // return $photo_path;
-    // }
-
-
 }
