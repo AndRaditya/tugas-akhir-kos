@@ -36,17 +36,15 @@ class KosService
         return $this->kosRepository->create($data);
     }
 
-    public function insertKosPhotos($images, $kos_id)
+    public function insertKosPhotos($image, $kos_id)
     {
         $folder = "kos_photos/".$kos_id;
-        KosPhotos::where('kos_id', $kos_id)->delete();
+        // KosPhotos::where('kos_id', $kos_id)->delete();
 
-        foreach($images as $image){
-            $data['kos_id'] = $kos_id;
-            $data['photo_path'] = $this->fileHandlerService->storage($image['image_url'], $folder);
-    
-            KosPhotos::create($data);
-        }
+        $data['kos_id'] = $kos_id;
+        $data['photo_path'] = $this->fileHandlerService->storage($image['image_url'], $folder);
+        
+        KosPhotos::create($data);
     }
 
     public function deleteKosPhotos($kos_id, $image){

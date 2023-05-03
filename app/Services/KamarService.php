@@ -44,17 +44,15 @@ class KamarService
         return $this->kamarRepository->create($data);
     }
 
-    public function insertKamarPhotos($images, $kamar_id)
+    public function insertKamarPhotos($image, $kamar_id)
     {
         $folder = "kamar_photos/".$kamar_id;
-        KamarPhotos::where('kamar_id', $kamar_id)->delete();
+        // KamarPhotos::where('kamar_id', $kamar_id)->delete();
 
-        foreach($images as $image){
-            $data['kamar_id'] = $kamar_id;
-            $data['photo_path'] = $this->fileHandlerService->storage($image['image_url'], $folder);
-    
-            KamarPhotos::create($data);
-        }
+        $data['kamar_id'] = $kamar_id;
+        $data['photo_path'] = $this->fileHandlerService->storage($image['image_url'], $folder);
+
+        KamarPhotos::create($data);
     }
 
     public function deleteKamarPhotos($kamar_id, $image){
