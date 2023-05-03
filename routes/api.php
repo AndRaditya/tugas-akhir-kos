@@ -41,6 +41,8 @@ Route::post('kamar', 'Api\KamarController@create');
 Route::put('kamar/{id}', 'Api\KamarController@update');
 Route::delete('kamar/{id}', 'Api\KamarController@delete');
 
+Route::put('kamar-photos/{id}', 'Api\KamarController@deleteKamarPhotos');
+
 // KOS BOOKING
 Route::get('kos-booking', 'Api\KosBookingController@getAll');
 Route::get('kos-booking/{id}', 'Api\KosBookingController@get');
@@ -55,6 +57,8 @@ Route::get('transaksi-masuk/{id}', 'Api\TransaksiMasukController@get');
 Route::post('transaksi-masuk', 'Api\TransaksiMasukController@create');
 Route::put('transaksi-masuk/{id}', 'Api\TransaksiMasukController@update');
 Route::delete('transaksi-masuk/{id}', 'Api\TransaksiMasukController@delete');
+
+Route::put('transaksi-masuk-photos/{id}', 'Api\TransaksiMasukController@deleteBuktiTransfer');
 
 Route::get('transaksi-masuk-kategori', 'Api\TransaksiMasukKategoriController@getDataList');
 

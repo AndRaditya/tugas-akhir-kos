@@ -54,7 +54,11 @@ class KosController extends Controller
             $kos_photos = $request['kos_photos'];
 
             if(count($kos_photos) > 0){
-                $this->kosService->insertKosPhotos($kos_photos, $id);
+                foreach($kos_photos as $kos_photo){
+                    if(count($kos_photo) == 1){
+                        $this->kosService->insertKosPhotos($kos_photo, $id);
+                    }
+                }
             }
 
             $request = $request->only(Schema::getColumnListing('kos'));

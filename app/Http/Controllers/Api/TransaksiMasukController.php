@@ -66,13 +66,15 @@ class TransaksiMasukController extends Controller
 
             if(!empty($request['bukti_transfer'])){
                 $bukti_transfer = $request['bukti_transfer'];
-
-                $this->transaksiMasukService->insertBuktiTransfer($bukti_transfer, $id, $request['no']);
+                
+                if(!is_array($bukti_transfer)){
+                    $this->transaksiMasukService->insertBuktiTransfer($bukti_transfer, $id, $request['no']);
+                }
             }
 
             $this->biayaTambahanController->deleteSelected($id);
 
-            if($request->biaya_tambahan > 0){
+            if(!empty($request->biaya_tambahan)){
                 $biaya_tambahan = $request->biaya_tambahan;
 
                 $this->biayaTambahanController->create($biaya_tambahan, $id);

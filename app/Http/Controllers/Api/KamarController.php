@@ -47,8 +47,9 @@ class KamarController extends Controller
     }
 
     public function create(request $request){
-        return DB::transaction(function () use ($request){
+        return DB::transaction(function () use ($request){ 
             $kamar_photos = $request['kamar_photos'];
+
             $kamar_fasilitas = $request['kamar_fasilitas'];
 
             $data = $request->only(Schema::getColumnListing('kamars'));
@@ -60,7 +61,9 @@ class KamarController extends Controller
             } 
 
             if(count($kamar_photos) > 0){
-                $this->kamarService->insertKamarPhotos($kamar_photos, $kamar_id);
+                foreach($kamar_photos as $kamar_photo){
+                    $this->kamarService->insertKamarPhotos($kamar_photo, $kamar_id);
+                }
             }
 
             return ResponseHelper::create($kamar_id);
@@ -83,7 +86,11 @@ class KamarController extends Controller
             } 
 
             if(count($kamar_photos) > 0){
-                $this->kamarService->insertKamarPhotos($kamar_photos, $id);
+                foreach($kamar_photos as $kamar_photo){
+                    if(count($kamar_photo) == 1){
+                        $this->kamarService->insertKamarPhotos($kamar_photo, $id);
+                    }
+                }
             }
             
             $container = $this->kamarService->update($id, $request);
@@ -107,11 +114,11 @@ class KamarController extends Controller
         return ResponseHelper::delete();
     }
 
-    public function deleteKosPhotos($id, Request $request)
+    public function deleteKamarPhotos($id, Request $request)
     {
-        $photo = $request->kos_photos;
+        $photo = $request->kamar_photos;
         if ($photo) {
-            return $this->kosService->deleteKosPhotos($id, $photo);
+            return $this->kamarService->deleteKamarPhotos($id, $photo);
         }
     }
 
