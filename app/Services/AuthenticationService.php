@@ -2,9 +2,10 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Redis;
+
 use Hash;
 use App\Repositories\UserRepository;
+use Illuminate\Support\Facades\Redis;
 
 class AuthenticationService
 {
@@ -26,5 +27,25 @@ class AuthenticationService
         }
 
         return $userData;
+    }
+
+    public function generateToken()
+    {
+        return md5(rand(1, 10) . microtime());
+    }
+
+    public function setTokenData($key, $value)
+    {
+        Redis::set($key, json_encode($value));
+    }
+
+    public function getTokenData($key)
+    {
+        return (array) (json_decode(Redis::get($key)));
+    }
+
+    public function removeToken($key)
+    {
+        return Redis::del($key);
     }
 }
