@@ -36,8 +36,11 @@ class UserController extends Controller
             ];
         }
 
+        $token = $this->authenticationService->generateToken();
+        $this->authenticationService->setTokenData($token, $authenticatedUserData);
         return [
             'api_status' => 'success',
+            'api_message' => $token,
             'data' => [$authenticatedUserData],
         ];
     }
