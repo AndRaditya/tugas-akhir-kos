@@ -25,6 +25,8 @@ Route::get('landing-page/{id}', 'Api\KosController@get');
 // KAMAR
 Route::get('kamar-kosong', 'Api\KamarController@getKamarKosong');
 
+Route::get('generate-pdf', 'Api\DocumentPdfController@generatePDF');
+
 
 Route::group(['middleware' => ['auth.redis']], function () {
     
@@ -82,6 +84,11 @@ Route::group(['middleware' => ['auth.redis']], function () {
 
     // KOS FASILITAS
     Route::get('kos-fasilitas', 'Api\KosFasilitasController@getAll');
-
-
 });
+
+// Route::get('trs-generate-pdf', 'Api\TransaksiMasukExportController@generatePDF');
+
+// EXPORT
+Route::get('export/transaksi-masuk', 'Api\TransaksiMasukExportController@generatePDF');
+Route::get('export/transaksi-keluar', 'Api\TransaksiKeluarExportController@generatePDF');
+Route::get('export/transaksi-semua', 'Api\TransaksiAllExportController@generatePDF');
