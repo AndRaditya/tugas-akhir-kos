@@ -62,6 +62,11 @@ Route::group(['middleware' => ['auth.redis']], function () {
     Route::get('kos-booking-users/{id}', 'Api\KosBookingController@getByUser');
     Route::post('kos-booking-pembayaran/{id}', 'Api\KosBookingController@pembayaran');
 
+    Route::get('kos-booking-status/user/{id}', 'Api\KosBookingController@getByStatusByUser');
+    Route::get('search/kos-booking', 'Api\KosBookingController@searchPaginate');
+    Route::post('filter/kos-booking', 'Api\KosBookingController@getFilter');
+    Route::post('sort/kos-booking', 'Api\KosBookingController@getSortData');
+
     // TRANSAKSI MASUK
     Route::get('transaksi-masuk', 'Api\TransaksiMasukController@getAll');
     Route::get('transaksi-masuk/{id}', 'Api\TransaksiMasukController@get');
