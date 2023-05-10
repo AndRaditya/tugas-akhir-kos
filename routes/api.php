@@ -24,9 +24,10 @@ Route::get('landing-page/{id}', 'Api\KosController@get');
 
 // KAMAR
 Route::get('kamar-kosong', 'Api\KamarController@getKamarKosong');
+Route::get('kamar-photos', 'Api\KamarController@getKamarPhotos');
+Route::get('kamar-fasilitas', 'Api\KamarController@getFasilitasKamar');
 
 Route::get('generate-pdf', 'Api\DocumentPdfController@generatePDF');
-
 
 Route::group(['middleware' => ['auth.redis']], function () {
     
@@ -43,6 +44,9 @@ Route::group(['middleware' => ['auth.redis']], function () {
     Route::put('kos/{id}', 'Api\KosController@update');
     Route::put('kos-photos/{id}', 'Api\KosController@deleteKosPhotos');
     Route::get('kos-photos', 'Api\KosController@getPhotos');
+
+    Route::get('kos-list', 'Api\KosController@getDataList');
+
 
     // KAMAR
     Route::get('kamar', 'Api\KamarController@getAll');

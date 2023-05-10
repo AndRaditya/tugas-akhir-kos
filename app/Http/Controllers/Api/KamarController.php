@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Helpers\ResponseHelper;
 use App\Services\KamarService;
 use App\Http\Controllers\Api\KamarFasilitasController;
+use App\Models\Kamar;
 use DB;
 use Illuminate\Support\Facades\Schema;
 
@@ -49,24 +50,32 @@ class KamarController extends Controller
     public function create(request $request){
         return DB::transaction(function () use ($request){ 
             $kamar_photos = $request['kamar_photos'];
-
             $kamar_fasilitas = $request['kamar_fasilitas'];
-
             $data = $request->only(Schema::getColumnListing('kamars'));
-
-            $kamar_id = $this->kamarService->create($data);
+            $number = $data['number'];
             
-            foreach($kamar_fasilitas as $kamar_fasilitas_each){
-                $this->kamarFasilitasController->create($kamar_fasilitas_each, $kamar_id);
-            } 
+            $kamar_db = Kamar::where('number', '=', $number)->first();
 
-            if(count($kamar_photos) > 0){
-                foreach($kamar_photos as $kamar_photo){
-                    $this->kamarService->insertKamarPhotos($kamar_photo, $kamar_id);
+            if($kamar_db == null){
+                $kamar_id = $this->kamarService->create($data);
+                
+                foreach($kamar_fasilitas as $kamar_fasilitas_each){
+                    $this->kamarFasilitasController->create($kamar_fasilitas_each, $kamar_id);
+                } 
+    
+                if(count($kamar_photos) > 0){
+                    foreach($kamar_photos as $kamar_photo){
+                        $this->kamarService->insertKamarPhotos($kamar_photo, $kamar_id);
+                    }
                 }
+    
+                return ResponseHelper::create($kamar_id);
+            }else{
+                $error['message'] = 'Kamar Nomor ' . $number . ' sudah ada';
+                
+                return ResponseHelper::error($error);
             }
 
-            return ResponseHelper::create($kamar_id);
         });
     }
 
@@ -120,6 +129,25 @@ class KamarController extends Controller
         if ($photo) {
             return $this->kamarService->deleteKamarPhotos($id, $photo);
         }
+    }
+
+    public function getKamarPhotos(){
+        $result = $this->kamarService->getKamarPhotos();
+
+        return ResponseHelper::get($result);
+    }
+
+    public function getFasilitasKamar(){
+        $result = $this->kamarService->getFasilitasKamar();
+        
+        $fasilitas = [];
+        foreach($result as $data){
+            array_push($fasilitas, $data['name']);
+        }
+
+        $fasilitas = array_unique($fasilitas);
+
+        return ResponseHelper::get($fasilitas);
     }
 
 

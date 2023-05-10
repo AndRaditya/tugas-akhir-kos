@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\KamarFasilitas;
 use App\Models\KamarPhotos;
 use App\Repositories\KamarRepository;
 
@@ -61,5 +62,18 @@ class KamarService
         return KamarPhotos::where('kamar_id', $kamar_id)
             ->where('photo_path', $photo_path)
             ->delete();
+    }
+
+    public function getKamarPhotos(){
+        return KamarPhotos::whereHas('kamar', function ($q) {
+                    $q->where('number', 1);
+                })
+                ->select('photo_path')
+                ->get();
+    }
+    
+    public function getFasilitasKamar(){
+        return KamarFasilitas::select('name')
+                ->get();
     }
 }

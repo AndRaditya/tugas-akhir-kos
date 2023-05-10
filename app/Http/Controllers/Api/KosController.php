@@ -38,6 +38,19 @@ class KosController extends Controller
         return ResponseHelper::get($result);
     }
 
+    public function getDataList(){
+        $result = $this->kosService->getAll();
+
+        $result->transform(function ($d) {
+            return [
+                'text' => $d->name,
+                'value' => $d->id,
+            ];
+        });
+
+        return $result;
+    }
+
     public function create(Request $request){
         return DB::transaction(function () use ($request){
             $data = $request->only(Schema::getColumnListing('kos'));
