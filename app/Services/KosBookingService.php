@@ -51,7 +51,7 @@ class KosBookingService
 
         $container = $this->filtering($container, $filter);
         return $container                    
-                ->orderByRaw("FIELD(status , 'Menunggu Konfirmasi Kamar', 'Menunggu Konfirmasi Pembayaran', 'Terkonfirmasi', 'Dibatalkan') ASC")
+                ->orderByRaw("FIELD(status , 'Menunggu Konfirmasi Pengelola', 'Terkonfirmasi', 'Dibatalkan') ASC")
                 ->orderBy('date', 'DESC')
                 ->get();
     }

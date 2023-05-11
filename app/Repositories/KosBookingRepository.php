@@ -28,7 +28,7 @@ class KosBookingRepository implements Repository
         return $this->kosBookingModel                    
                     ->with('user')
                     ->with('kamar')
-                    ->orderByRaw("FIELD(status , 'Menunggu Konfirmasi Kamar', 'Menunggu Konfirmasi Pembayaran', 'Terkonfirmasi', 'Dibatalkan') ASC")
+                    ->orderByRaw("FIELD(status , 'Menunggu Konfirmasi Pengelola', 'Terkonfirmasi', 'Dibatalkan') ASC")
                     ->orderBy('date', 'DESC')
                     ->get();
     }
@@ -38,7 +38,7 @@ class KosBookingRepository implements Repository
         return $this->kosBookingModel->where('users_id',$user_id)
                     ->with('user')
                     ->with('kamar')
-                    ->orderByRaw("FIELD(status , 'Menunggu Konfirmasi Kamar', 'Menunggu Konfirmasi Pembayaran', 'Terkonfirmasi', 'Dibatalkan') ASC")
+                    ->orderByRaw("FIELD(status , 'Menunggu Konfirmasi Pengelola', 'Terkonfirmasi', 'Dibatalkan') ASC")
                     ->orderBy('date', 'DESC')
                     ->get();
     }
@@ -87,7 +87,7 @@ class KosBookingRepository implements Repository
                             $q->orWhere('status', "like", "%" . $keyword . "%");
                             $q->orWhere('total_price', "like", "%" . $keyword . "%");
                         })
-                        ->orderByRaw("FIELD(status , 'Menunggu Konfirmasi Kamar', 'Menunggu Konfirmasi Pembayaran', 'Terkonfirmasi', 'Dibatalkan') ASC")
+                        ->orderByRaw("FIELD(status , 'Menunggu Konfirmasi Pengelola', 'Terkonfirmasi', 'Dibatalkan') ASC")
                         ->orderBy('date', 'DESC')
                         ->get();
         }else{
@@ -109,7 +109,7 @@ class KosBookingRepository implements Repository
                             $q->orWhere('status', "like", "%" . $keyword . "%");
                             $q->orWhere('total_price', "like", "%" . $keyword . "%");
                         })
-                        ->orderByRaw("FIELD(status , 'Menunggu Konfirmasi Kamar', 'Menunggu Konfirmasi Pembayaran', 'Terkonfirmasi', 'Dibatalkan') ASC")
+                        ->orderByRaw("FIELD(status , 'Menunggu Konfirmasi Pengelola', 'Terkonfirmasi', 'Dibatalkan') ASC")
                         ->orderBy('date', 'DESC')
                         ->get();
         }
@@ -125,7 +125,7 @@ class KosBookingRepository implements Repository
                     ->with('user')
                     ->with('kamar')
                     ->orderBy('date', $data['sort'])
-                    ->orderByRaw("FIELD(status , 'Menunggu Konfirmasi Kamar', 'Menunggu Konfirmasi Pembayaran', 'Terkonfirmasi', 'Dibatalkan') ASC")
+                    ->orderByRaw("FIELD(status , 'Menunggu Konfirmasi Pengelola', 'Terkonfirmasi', 'Dibatalkan') ASC")
                     ->get();
             }else if($data['jenis'] == 'total_price'){
                 return $this->kosBookingModel                    
@@ -133,14 +133,14 @@ class KosBookingRepository implements Repository
                     ->with('user')
                     ->with('kamar')
                     ->orderBy('total_price', $data['sort'])
-                    ->orderByRaw("FIELD(status , 'Menunggu Konfirmasi Kamar', 'Menunggu Konfirmasi Pembayaran', 'Terkonfirmasi', 'Dibatalkan') ASC")
+                    ->orderByRaw("FIELD(status , 'Menunggu Konfirmasi Pengelola', 'Terkonfirmasi', 'Dibatalkan') ASC")
                     ->get();
             }else{
                 return $this->kosBookingModel                    
                         ->where('users_id', $user_id)
                         ->with('user')
                         ->with('kamar')
-                        ->orderByRaw("FIELD(status , 'Menunggu Konfirmasi Kamar', 'Menunggu Konfirmasi Pembayaran', 'Terkonfirmasi', 'Dibatalkan') ASC")
+                        ->orderByRaw("FIELD(status , 'Menunggu Konfirmasi Pengelola', 'Terkonfirmasi', 'Dibatalkan') ASC")
                         ->orderBy('date', $data['sort'])
                         ->get();
             }
@@ -150,20 +150,20 @@ class KosBookingRepository implements Repository
                     ->with('user')
                     ->with('kamar')
                     ->orderBy('date', $data['sort'])
-                    ->orderByRaw("FIELD(status , 'Menunggu Konfirmasi Kamar', 'Menunggu Konfirmasi Pembayaran', 'Terkonfirmasi', 'Dibatalkan') ASC")
+                    ->orderByRaw("FIELD(status , 'Menunggu Konfirmasi Pengelola', 'Terkonfirmasi', 'Dibatalkan') ASC")
                     ->get();
             }else if($data['jenis'] == 'total_price'){
                 return $this->kosBookingModel                    
                     ->with('user')
                     ->with('kamar')
                     ->orderBy('total_price', $data['sort'])
-                    ->orderByRaw("FIELD(status , 'Menunggu Konfirmasi Kamar', 'Menunggu Konfirmasi Pembayaran', 'Terkonfirmasi', 'Dibatalkan') ASC")
+                    ->orderByRaw("FIELD(status , 'Menunggu Konfirmasi Pengelola', 'Terkonfirmasi', 'Dibatalkan') ASC")
                     ->get();
             }else{
                 return $this->kosBookingModel                    
                     ->with('user')
                     ->with('kamar')
-                    ->orderByRaw("FIELD(status , 'Menunggu Konfirmasi Kamar', 'Menunggu Konfirmasi Pembayaran', 'Terkonfirmasi', 'Dibatalkan') ASC")
+                    ->orderByRaw("FIELD(status , 'Menunggu Konfirmasi Pengelola', 'Terkonfirmasi', 'Dibatalkan') ASC")
                     ->orderBy('date', $data['sort'])
                     ->get();
             }
