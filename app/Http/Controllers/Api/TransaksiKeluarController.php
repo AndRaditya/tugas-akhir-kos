@@ -37,10 +37,12 @@ class TransaksiKeluarController extends Controller
 
     public function create(request $request){
         return DB::transaction(function () use ($request){
+            $kategori = $request->kategori;
             $data = $request->only(Schema::getColumnListing('transaksi_keluars'));
             $data['no'] = $this->numberGeneratorService->generateNumber('TRSOUT');
 
             $kosQuery = $this->transaksiKeluarService->create($data);
+
             return ResponseHelper::create($kosQuery);
         });
     }

@@ -2,12 +2,15 @@
 
 namespace App\Services;
 
+use App\Models\KosBooking;
 use App\Models\KosBuktiTransfer;
 use App\Repositories\KosBookingRepository;
 
 class KosBookingService
 {
     /** @var KosBookingRepository */
+    const DEFAULT_PER_PAGE = 25;
+
     private $kosBookingRepository;
     private $fileHandlerService;
 
@@ -18,12 +21,12 @@ class KosBookingService
 
     }
 
-    public function getAll(){
-        return $this->kosBookingRepository->getAll();
-    }
-
     public function get($id){
         return $this->kosBookingRepository->get($id);
+    }
+
+    public function getAll(){
+        return $this->kosBookingRepository->getAll();
     }
 
     public function getByUser($user_id){

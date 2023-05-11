@@ -19,6 +19,7 @@ use App\Models\User;
 
 class KosBookingController extends Controller
 {
+    const DEFAULT_PER_PAGE = 25;
     private $kosBookingService;
     private $numberGeneratorService;
     private $kamarService;
@@ -48,6 +49,77 @@ class KosBookingController extends Controller
     public function getByUser($user_id){
         $result = $this->kosBookingService->getByUser($user_id);
         return ResponseHelper::get($result);
+    }
+
+    public function getByStatusByUser($user_id){
+        $result = $this->kosBookingService->getByStatusByUser($user_id);
+        return ResponseHelper::get($result);
+    }
+
+    public function searchPaginate(Request $request){
+        $keyword = @$request->keyword;
+        $user_id = @$request->user_id;
+
+        $data = $this->kosBookingService->searchPaginate($keyword, $user_id);
+        return $data;
+    }
+
+    public function getFilter(Request $request){
+        $filter = $this->extrackFilter($request);
+        $user_id = @$request->user_id;
+
+        $result = $this->kosBookingService->getFilter($filter, $user_id);
+
+        return $result;
+    }
+
+    private function extrackFilter(Request $request)
+    {
+        $filter = [];
+        $filter['user_name'] = @$request->user_name;
+        $filter['nomor_kamar'] = @$request->nomor_kamar;
+        $filter['kode'] = @$request->kode;
+        $filter['date'] = @$request->date;
+        $filter['tanggal_mulai'] = @$request->tanggal_mulai;
+        $filter['tanggal_selesai'] = @$request->tanggal_selesai;
+        $filter['status'] = @$request->status;
+        $filter['total_price'] = @$request->total_price;
+        $filter['total_bulan'] = @$request->total_bulan;
+
+        return $filter;
+    }
+
+    public function getSortData(Request $request){
+        $data = @$request->sort_data;
+        $user_id = @$request->user_id;
+
+        $sorted = $this->filterSort($data);
+
+        $result = $this->kosBookingService->getSortData($sorted, $user_id);
+
+        return $result;
+    }
+
+    public function filterSort($data){
+        $filter = [];
+        if($data == 'Tanggal Awal - Akhir'){
+            $filter['jenis'] = 'date';
+            $filter['sort'] = 'asc';
+        }else if($data == 'Tanggal Akhir - Awal'){
+            $filter['jenis'] = 'date';
+            $filter['sort'] = 'desc';
+        }else if($data == 'Harga Termurah'){
+            $filter['jenis'] = 'total_price';
+            $filter['sort'] = 'asc';
+        }else if($data == 'Harga Tertinggi'){
+            $filter['jenis'] = 'total_price';
+            $filter['sort'] = 'desc';
+        }else{
+            $filter['jenis'] = 'status';
+            $filter['sort'] = 'desc';
+        }
+
+        return $filter;
     }
 
     public function create(request $request){

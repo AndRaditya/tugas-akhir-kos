@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class KosFasilitas extends Model
 {
     use HasFactory;
+    protected $guarded = ["id"];
 
     public function kos()
     {

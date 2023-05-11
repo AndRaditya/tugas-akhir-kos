@@ -15,13 +15,14 @@ class TransaksiMasukController extends Controller
 {
     private $transaksiMasukService;
     private $numberGeneratorService;
+    private $biayaTambahanController;
 
 
-    public function __construct(TransaksiMasukService $transaksiMasukService, NumberGeneratorService $numberGeneratorService)
+    public function __construct(TransaksiMasukService $transaksiMasukService, NumberGeneratorService $numberGeneratorService, BiayaTambahanController $biayaTambahanController)
     {
         $this->transaksiMasukService = $transaksiMasukService;
         $this->numberGeneratorService = $numberGeneratorService;
-
+        $this->biayaTambahanController = $biayaTambahanController;
     }
  
     public function getAll()
@@ -41,15 +42,44 @@ class TransaksiMasukController extends Controller
         return DB::transaction(function () use ($request){
             $data = $request->only(Schema::getColumnListing('transaksi_masuks'));
             $data['no'] = $this->numberGeneratorService->generateNumber('TRSIN');
+            
+            $trsMasukQuery = $this->transaksiMasukService->create($data);
 
-            $kosQuery = $this->transaksiMasukService->create($data);
-            return ResponseHelper::create($kosQuery);
+            if(!empty($request->biaya_tambahan)){
+                $biaya_tambahan = $request->biaya_tambahan;
+                
+                $this->biayaTambahanController->create($biaya_tambahan, $trsMasukQuery);
+            }
+
+            if(!empty($request->bukti_transfer)){
+                $bukti_transfer = $request->bukti_transfer;
+
+                $this->transaksiMasukService->insertBuktiTransfer($bukti_transfer, $trsMasukQuery, $data['no']);
+            }
+            return ResponseHelper::create($trsMasukQuery);
         });
     }
 
     public function update($id, Request $request)
     {
         return DB::transaction(function () use ($id, $request) {
+
+            if(!empty($request['bukti_transfer'])){
+                $bukti_transfer = $request['bukti_transfer'];
+                
+                if(!is_array($bukti_transfer)){
+                    $this->transaksiMasukService->insertBuktiTransfer($bukti_transfer, $id, $request['no']);
+                }
+            }
+
+            $this->biayaTambahanController->deleteSelected($id);
+
+            if(!empty($request->biaya_tambahan)){
+                $biaya_tambahan = $request->biaya_tambahan;
+
+                $this->biayaTambahanController->create($biaya_tambahan, $id);
+            }
+
             $request = $request->only(Schema::getColumnListing('transaksi_masuks'));
             $request['updated_at'] = now();
 
@@ -57,6 +87,14 @@ class TransaksiMasukController extends Controller
 
             return ResponseHelper::put($container);
         });
+    }
+
+    public function deleteBuktiTransfer($id, Request $request)
+    {
+        $photo = $request->bukti_transfer;
+        if ($photo) {
+            return $this->transaksiMasukService->deleteBuktiTransfer($id, $photo);
+        }
     }
 
     public function delete($id)

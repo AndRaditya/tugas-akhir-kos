@@ -19,6 +19,8 @@ class KosBookingRepository implements Repository
         return $this->kosBookingModel->where('id',$id)
                     ->with('user')
                     ->with('kamar')
+                    ->with('bukti_transfer')
+                    ->orderBy('created_at', 'DESC')
                     ->get();
     }
 
@@ -30,6 +32,7 @@ class KosBookingRepository implements Repository
                     ->orderBy('date', 'DESC')
                     ->get();
     }
+
 
     public function getByUser($user_id){
         return $this->kosBookingModel->where('users_id',$user_id)
