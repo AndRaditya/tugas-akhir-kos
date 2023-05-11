@@ -18,6 +18,7 @@ class KosRepository implements Repository
     public function get($id){
         return $this->kosModel->where('id',$id)
                     ->with('kamar_spesifikasi')
+                    ->with('kamar')
                     ->with('kos_fasilitas')
                     ->with('kos_photos')
                     ->get();

@@ -24,5 +24,9 @@ class Kamar extends Model
         return $this->belongsTo(KosBooking::class);
     }
 
+    public function kos(){
+        return $this->hasOne(Kos::class);
+    }
+
 
 }
