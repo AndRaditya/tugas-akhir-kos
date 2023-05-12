@@ -76,4 +76,8 @@ class KamarService
         return KamarFasilitas::select('name')
                 ->get();
     }
+    
+    public function getNomorKamarWithNama(){
+        return $this->kamarRepository->getNomorKamarWithNama();
+    }
 }

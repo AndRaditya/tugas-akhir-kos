@@ -51,6 +51,7 @@ Route::group(['middleware' => ['auth.redis']], function () {
     // KAMAR
     Route::get('kamar', 'Api\KamarController@getAll');
     Route::get('kamar/{id}', 'Api\KamarController@get');
+    Route::get('kamar-nomor', 'Api\KamarController@getNomorKamarWithNama');
 
     Route::post('kamar', 'Api\KamarController@create');
     Route::put('kamar/{id}', 'Api\KamarController@update');
@@ -70,6 +71,8 @@ Route::group(['middleware' => ['auth.redis']], function () {
     Route::get('search/kos-booking', 'Api\KosBookingController@searchPaginate');
     Route::post('filter/kos-booking', 'Api\KosBookingController@getFilter');
     Route::post('sort/kos-booking', 'Api\KosBookingController@getSortData');
+    
+    Route::get('kode/kos-booking', 'Api\KosBookingController@getKodeBooking');
 
     // TRANSAKSI MASUK
     Route::get('transaksi-masuk', 'Api\TransaksiMasukController@getAll');
