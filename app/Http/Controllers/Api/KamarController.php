@@ -108,9 +108,10 @@ class KamarController extends Controller
         });
     }
 
-    public function updateStatusKamar($data){
-        return DB::transaction(function () use ($data) {
+    public function updateStatusKamar($data, $kos_booking_id){
+        return DB::transaction(function () use ($data, $kos_booking_id) {
             $data['updated_at'] = now();
+            $data['kos_booking_id'] = $kos_booking_id;
             $container = $this->kamarService->update($data['id'], $data);
 
             return ResponseHelper::put($container);
@@ -148,6 +149,12 @@ class KamarController extends Controller
         $fasilitas = array_unique($fasilitas);
 
         return ResponseHelper::get($fasilitas);
+    }
+
+    public function getNomorKamarWithNama(){
+        $result = $this->kamarService->getNomorKamarWithNama();
+
+        return ResponseHelper::get($result);
     }
 
 

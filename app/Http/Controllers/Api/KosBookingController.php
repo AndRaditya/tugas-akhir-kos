@@ -46,6 +46,20 @@ class KosBookingController extends Controller
         return ResponseHelper::get($result);
     }
 
+    public function getKodeBooking()
+    {
+        $result = $this->kosBookingService->getKodeBooking();
+        
+        $result->transform(function ($d) {
+            return [
+                'text' => $d->kode,
+                'value' => $d->id,
+            ];
+        });
+
+        return $result;
+    }
+
     public function getByUser($user_id){
         $result = $this->kosBookingService->getByUser($user_id);
         return ResponseHelper::get($result);
@@ -154,23 +168,25 @@ class KosBookingController extends Controller
     {
         return DB::transaction(function () use ($id, $request) {
             $nomor_kamar = $request['nomor_kamar'];
+            $user_id = $request['user']['id'];
             $request = $request->only(Schema::getColumnListing('kos_bookings'));
             $request['updated_at'] = now();
 
             if($nomor_kamar && $request['status'] != 'Dibatalkan'){
                 $data = [];
+                $nama_user = User::where('id', $user_id)->select('name')->first();
                 
-                $data['number'] = $nomor_kamar;
-                $data['status'] = 'Dipakai';
-                $kamar_id = Kamar::where('number', $data['number'])->select('id')->first();
-                $data['id'] = $kamar_id['id'];
+                foreach($nomor_kamar as $nomor){
+                    $data['number'] = $nomor;
+                    $data['status'] = 'Dipakai';
+                    $kamar_id = Kamar::where('number', $data['number'])->select('id')->first();
+                    $data['id'] = $kamar_id['id'];
+                    $data['nama_penyewa'] = $nama_user->name;
+
+                    $this->kamarController->updateStatusKamar($data, $id);
+                }
+
                 $request['kamar_id'] = $kamar_id['id'];
-
-                $nama_user = User::where('id', $data['users_id'])->select('name')->first();
-
-                $data['nama_penyewa'] = $nama_user->name;
-
-                $this->kamarController->updateStatusKamar($data);
             }
             $container = $this->kosBookingService->update($id, $request);
             return ResponseHelper::put($container);

@@ -36,6 +36,10 @@ class KosBookingService
     public function getByStatusByUser($user_id){
         return $this->kosBookingRepository->getByStatusByUser($user_id);
     }
+    
+    public function getKodeBooking(){
+        return $this->kosBookingRepository->getKodeBooking();
+    }
 
     public function searchPaginate($keyword, $user_id){
         return $this->kosBookingRepository->searchPaginate($keyword, $user_id);

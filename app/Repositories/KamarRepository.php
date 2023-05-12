@@ -54,5 +54,13 @@ class KamarRepository implements Repository
     {
         return $this->kamarModel::where(self::PRIMARY_KEY, $id)->delete();
     }
+    
+    public function getNomorKamarWithNama()
+    {
+        return $this->kamarModel
+                    ->select(array('number', 'nama_penyewa'))
+                    ->orderBy('number', 'asc')
+                    ->get();
+    }
 
 }

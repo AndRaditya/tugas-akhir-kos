@@ -51,6 +51,15 @@ class KosBookingRepository implements Repository
                     ->get();
     }
 
+    public function getKodeBooking(){
+        return $this->kosBookingModel                    
+                    ->with('user')
+                    ->with('kamar')
+                    ->where('status', 'Terkonfirmasi')
+                    ->orderBy('kode', 'asc')
+                    ->get();
+    }
+
     public function create($data)
     {
         return $this->kosBookingModel::create($data)->id;
