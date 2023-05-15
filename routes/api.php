@@ -27,7 +27,8 @@ Route::get('kamar-kosong', 'Api\KamarController@getKamarKosong');
 Route::get('kamar-photos', 'Api\KamarController@getKamarPhotos');
 Route::get('kamar-fasilitas', 'Api\KamarController@getFasilitasKamar');
 
-Route::get('generate-pdf', 'Api\DocumentPdfController@generatePDF');
+Route::post('forgot-password', 'Api\UserController@forgotPassword');
+Route::get('forgot-password-view', 'Api\UserController@forgotPasswordView');
 
 Route::group(['middleware' => ['auth.redis']], function () {
     
