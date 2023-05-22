@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('login', 'Api\UserController@login');
 Route::post('register', 'Api\UserController@create');
 
+
 // KOS
 Route::get('landing-page/{id}', 'Api\KosController@get');
 
@@ -37,6 +38,13 @@ Route::group(['middleware' => ['auth.redis']], function () {
     Route::get('users-pengelola', 'Api\UserController@getPengelola');
     Route::put('users/{id}', 'Api\UserController@update');
     Route::put('users', 'Api\UserController@changePassword');
+    Route::post('users-firebase', 'Api\UserController@getFirebaseToken');
+    Route::get('logout', 'Api\UserController@logout');
+
+
+    // SEND NOTIFICATION
+    Route::post('users/send-notification', 'Api\NotificationController@sendNotification');
+
 
     // KOS
     Route::get('kos', 'Api\KosController@getAll');
