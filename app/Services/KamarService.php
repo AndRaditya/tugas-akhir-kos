@@ -21,6 +21,10 @@ class KamarService
         return $this->kamarRepository->get($id);
     }
 
+    public function getByNomor($id){
+        return $this->kamarRepository->getByNomor($id);
+    }
+
     public function getKamarKosong(){
         return $this->kamarRepository->getKamarKosong();
     }

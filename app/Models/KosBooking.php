@@ -26,5 +26,10 @@ class KosBooking extends Model
         return $this->hasOne(KosBuktiTransfer::class,'kos_bukti_transfer_id','id');
     }
 
+    public function transaksi_masuk()
+    {
+        return $this->hasMany(TransaksiMasuk::class);
+    }
+
 
 }

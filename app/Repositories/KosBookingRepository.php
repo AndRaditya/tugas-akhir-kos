@@ -19,6 +19,9 @@ class KosBookingRepository implements Repository
         return $this->kosBookingModel->where('id',$id)
                     ->with('user')
                     ->with('kamar')
+                    ->with('transaksi_masuk')
+                    ->with('bukti_transfer')
+                    ->orderBy('created_at', 'DESC')
                     ->get();
     }
 

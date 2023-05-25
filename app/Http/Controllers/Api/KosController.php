@@ -8,7 +8,10 @@ use App\Http\Controllers\Controller;
 use App\Helpers\ResponseHelper;
 use DB;
 use Illuminate\Support\Facades\Schema;
-
+use App\Http\Controllers\Api\KamarSpesifikasiController;
+use App\Http\Controllers\Api\KosFasilitasController;
+use App\Models\Kos;
+use Illuminate\Support\Facades\Storage;
 
 class KosController extends Controller
 {
@@ -32,7 +35,19 @@ class KosController extends Controller
         return ResponseHelper::get($result);
     }
 
-    public function create(request $request){
+    public function getDataList(){
+        $result = $this->kosService->getAll();
+
+        $result->transform(function ($d) {
+            return [
+                $d->name
+            ];
+        });
+
+        return $result;
+    }
+
+    public function create(Request $request){
         return DB::transaction(function () use ($request){
             $data = $request->only(Schema::getColumnListing('kos'));
             $kosQuery = $this->kosService->create($data);
@@ -45,6 +60,7 @@ class KosController extends Controller
         return DB::transaction(function () use ($id, $request) {
             $request = $request->only(Schema::getColumnListing('kos'));
             $request['updated_at'] = now();
+
 
             $container = $this->kosService->update($id, $request);
 

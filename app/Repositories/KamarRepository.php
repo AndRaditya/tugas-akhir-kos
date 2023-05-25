@@ -22,6 +22,11 @@ class KamarRepository implements Repository
                     ->get();
     }
 
+    public function getByNomor($id){
+        return $this->kamarModel->where('number',$id)
+                    ->get();
+    }
+
     public function getAll(){
         return $this->kamarModel
                     ->with('kamar_fasilitas')
@@ -31,6 +36,7 @@ class KamarRepository implements Repository
     public function getKamarKosong(){
         return $this->kamarModel
                     ->where('status', '=', 'Kosong')
+                    ->orderBy('number', 'asc')
                     ->get();
     }
 

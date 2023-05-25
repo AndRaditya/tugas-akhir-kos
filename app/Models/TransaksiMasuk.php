@@ -27,7 +27,7 @@ class TransaksiMasuk extends Model
 
     public function kos_booking()
     {
-        return $this->hasOne(KosBooking::class,'id', 'kos_booking_id');
+        return $this->belongsTo(KosBooking::class, 'kos_booking_id', 'id');
     }
 
 }
