@@ -19,13 +19,14 @@ class TransaksiMasukController extends Controller
 {
     private $transaksiMasukService;
     private $numberGeneratorService;
+    private $biayaTambahanController;
 
 
-    public function __construct(TransaksiMasukService $transaksiMasukService, NumberGeneratorService $numberGeneratorService)
+    public function __construct(TransaksiMasukService $transaksiMasukService, NumberGeneratorService $numberGeneratorService, BiayaTambahanController $biayaTambahanController)
     {
         $this->transaksiMasukService = $transaksiMasukService;
         $this->numberGeneratorService = $numberGeneratorService;
-
+        $this->biayaTambahanController = $biayaTambahanController;
     }
  
     public function getAll()

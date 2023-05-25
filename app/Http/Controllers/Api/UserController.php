@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\ForgotPassword;
 use Illuminate\Http\Request;
 use App\Services\UserService;
 use App\Services\AuthenticationService;
@@ -10,6 +11,8 @@ use DB;
 use Illuminate\Support\Facades\Schema;
 use App\Helpers\ResponseHelper;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use App\Models\User;
 
 class UserController extends Controller
 {
@@ -36,10 +39,29 @@ class UserController extends Controller
             ];
         }
 
+        $token = $this->authenticationService->generateToken();
+        $firebaseToken = $request->firebase_token;
+
+        $id = $authenticatedUserData->id;
+
+        $this->updateFirebaseToken($id, $firebaseToken);
+
+        $this->authenticationService->setTokenData($token, $authenticatedUserData);
         return [
             'api_status' => 'success',
+            'api_message' => $token,
             'data' => [$authenticatedUserData],
         ];
+    }
+
+    public function logout(Request $request){
+        $id = $request->_session['id'];
+
+        $data['id'] = $id;
+        $data['firebase_token'] = null;
+        $container = $this->userService->update($id, $data);
+
+        return response()->json('Logout',200);
     }
 
     public function getAll()
@@ -125,10 +147,40 @@ class UserController extends Controller
         return true;
     }
 
+    public function forgotPassword(Request $request)
+    {
+        $validation = Validator::make($request->all(), [
+            'email' => 'required|exists:users,email'
+        ]);
+
+        if ($validation->fails()) {
+            return response("Email doesn't exist!", 400);
+        }
+
+        $user = User::where("email", $request->email)->first();
+
+        event(new ForgotPassword($user));
+
+        return response("Link Lupa Password sudah terkirim, jika Anda tidak menerima email, mungkin berada di folder Spam", 200);
+    }
+
+    public function forgotPasswordView(){
+        return view('ResetPassword');
+    }
+
     public function delete($id)
     {
         $this->userService->delete($id);
         return ResponseHelper::delete();
     }
 
+    public function updateFirebaseToken($id, $token){
+        return DB::transaction(function () use ($token, $id) {
+            $data['id'] = $id;
+            $data['firebase_token'] = $token;
+            $container = $this->userService->update($id, $data);
+
+            return ResponseHelper::put($container);
+        });
+    }
 }

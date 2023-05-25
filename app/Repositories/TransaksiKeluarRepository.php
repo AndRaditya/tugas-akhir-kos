@@ -22,7 +22,9 @@ class TransaksiKeluarRepository implements Repository
     }
 
     public function getAll(){
-        return $this->transaksiKeluarModel->get();
+        return $this->transaksiKeluarModel
+                        ->with('transaksi_keluar_kategori')
+                        ->get();
     }
 
     public function create($data)

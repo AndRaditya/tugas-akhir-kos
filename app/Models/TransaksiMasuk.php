@@ -22,7 +22,7 @@ class TransaksiMasuk extends Model
 
     public function bukti_transfer()
     {
-        return $this->hasOne(KosBuktiTransfer::class,'id', 'kos_bukti_transfer_id');
+        return $this->hasOne(KosBuktiTransfer::class);
     }
 
     public function kos_booking()

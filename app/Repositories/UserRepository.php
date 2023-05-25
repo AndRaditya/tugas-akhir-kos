@@ -21,7 +21,10 @@ class UserRepository implements Repository
     }
 
     public function get($user_id){
-      	return $this->userModel->where('id',$user_id)->get();
+      	return $this->userModel->where('id',$user_id)
+            ->with('user_role')
+            ->get()
+            ->makeHidden(['firebase_token']);
     }
     
     public function getPengelola(){
@@ -31,9 +34,18 @@ class UserRepository implements Repository
     public function getPassword($user_id){
       	return $this->userModel->where('id',$user_id)->select('password')->get();
     }
+    
+    public function getFirebaseToken($id, $role_name){
+      	return $this->userModel
+                    ->where('id',$id)
+                    ->whereHas('user_role', function ($q) use ($role_name){
+                        $q->where('name', "like", '%' . $role_name . '%');
+                    })
+                    ->select('firebase_token')->first();
+    }
 
     public function getAll(){
-      	return $this->userModel->get();
+      	return $this->userModel->get()->makeHidden(['firebase_token']);
     }
 
     public function create($data) {

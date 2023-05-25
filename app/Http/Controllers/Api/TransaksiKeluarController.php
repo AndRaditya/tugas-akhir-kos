@@ -52,6 +52,7 @@ class TransaksiKeluarController extends Controller
             $data['transaksi_keluar_kategori_id'] = $transaksi_keluar_kategori_id->id;
 
             $kosQuery = $this->transaksiKeluarService->create($data);
+
             return ResponseHelper::create($kosQuery);
         });
     }

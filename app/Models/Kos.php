@@ -18,6 +18,11 @@ class Kos extends Model
         return $this->hasMany(KamarSpesifikasi::class);
     }
 
+    public function kamar()
+    {
+        return $this->hasMany(Kamar::class);
+    }
+
     public function kos_photos()
     {
         return $this->hasMany(KosPhotos::class);

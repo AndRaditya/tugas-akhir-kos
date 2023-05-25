@@ -15,10 +15,12 @@ use Illuminate\Support\Facades\Schema;
 class KamarController extends Controller
 {
     private $kamarService;
+    private $kamarFasilitasController;
 
-    public function __construct(KamarService $kamarService)
+    public function __construct(KamarService $kamarService, KamarFasilitasController $kamarFasilitasController)
     {
         $this->kamarService = $kamarService;
+        $this->kamarFasilitasController = $kamarFasilitasController;
     }
 
     public function getAll()
@@ -131,9 +133,10 @@ class KamarController extends Controller
         });
     }
 
-    public function updateStatusKamar($data){
-        return DB::transaction(function () use ($data) {
+    public function updateStatusKamar($data, $kos_booking_id){
+        return DB::transaction(function () use ($data, $kos_booking_id) {
             $data['updated_at'] = now();
+            $data['kos_booking_id'] = $kos_booking_id;
             $container = $this->kamarService->update($data['id'], $data);
 
             return ResponseHelper::put($container);
@@ -156,6 +159,39 @@ class KamarController extends Controller
     {
         $this->kamarService->delete($id);
         return ResponseHelper::delete();
+    }
+
+    public function deleteKamarPhotos($id, Request $request)
+    {
+        $photo = $request->kamar_photos;
+        if ($photo) {
+            return $this->kamarService->deleteKamarPhotos($id, $photo);
+        }
+    }
+
+    public function getKamarPhotos(){
+        $result = $this->kamarService->getKamarPhotos();
+
+        return ResponseHelper::get($result);
+    }
+
+    public function getFasilitasKamar(){
+        $result = $this->kamarService->getFasilitasKamar();
+        
+        $fasilitas = [];
+        foreach($result as $data){
+            array_push($fasilitas, $data['name']);
+        }
+
+        $fasilitas = array_unique($fasilitas);
+
+        return ResponseHelper::get($fasilitas);
+    }
+
+    public function getNomorKamarWithNama(){
+        $result = $this->kamarService->getNomorKamarWithNama();
+
+        return ResponseHelper::get($result);
     }
 
 

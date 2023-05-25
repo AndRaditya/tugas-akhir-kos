@@ -16,12 +16,16 @@ class Kamar extends Model
 
     public function kamar_fasilitas()
     {
-        return $this->hasMany(KamarFasilitas::class);
+        return $this->hasMany(KamarFasilitas::class, 'kamar_id', 'id');
     }
 
     public function kos_booking()
     {
         return $this->belongsTo(KosBooking::class);
+    }
+
+    public function kos(){
+        return $this->hasOne(Kos::class);
     }
 
 

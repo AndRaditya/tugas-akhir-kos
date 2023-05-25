@@ -13,8 +13,6 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-// Route::get('users/{id}', 'Api\UserController@get');
-// Route::get('users', 'Api\UserController@getAll');
 
 
 //USER
@@ -49,11 +47,16 @@ Route::group(['middleware' => ['auth.redis']], function () {
     Route::post('users/send-notification', 'Api\NotificationController@sendNotification');
 
 
-// KOS
-Route::get('kos', 'Api\KosController@getAll');
-Route::get('kos/{id}', 'Api\KosController@get');
-Route::post('kos', 'Api\KosController@create');
-Route::put('kos/{id}', 'Api\KosController@update');
+    // KOS
+    Route::get('kos', 'Api\KosController@getAll');
+    Route::get('kos/{id}', 'Api\KosController@get');
+    Route::post('kos', 'Api\KosController@create');
+    Route::put('kos/{id}', 'Api\KosController@update');
+    Route::put('kos-photos/{id}', 'Api\KosController@deleteKosPhotos');
+    Route::get('kos-photos', 'Api\KosController@getPhotos');
+
+    Route::get('kos-list', 'Api\KosController@getDataList');
+
 
     // KAMAR
     Route::get('kamar', 'Api\KamarController@getAll');
@@ -77,23 +80,40 @@ Route::put('kos/{id}', 'Api\KosController@update');
     Route::delete('kos-booking/{id}', 'Api\KosBookingController@delete');
 
 
-// TRANSAKSI MASUK
-Route::get('transaksi-masuk', 'Api\TransaksiMasukController@getAll');
-Route::get('transaksi-masuk/{id}', 'Api\TransaksiMasukController@get');
-Route::post('transaksi-masuk', 'Api\TransaksiMasukController@create');
-Route::put('transaksi-masuk/{id}', 'Api\TransaksiMasukController@update');
-Route::delete('transaksi-masuk/{id}', 'Api\TransaksiMasukController@delete');
+    Route::get('kos-booking-status/user/{id}', 'Api\KosBookingController@getByStatusByUser');
+    Route::get('search/kos-booking', 'Api\KosBookingController@searchPaginate');
+    Route::post('filter/kos-booking', 'Api\KosBookingController@getFilter');
+    Route::post('sort/kos-booking', 'Api\KosBookingController@getSortData');
+    
+    Route::get('kode/kos-booking', 'Api\KosBookingController@getKodeBooking');
 
-// TRANSAKSI KELUAR
-Route::get('transaksi-keluar', 'Api\TransaksiKeluarController@getAll');
-Route::get('transaksi-keluar/{id}', 'Api\TransaksiKeluarController@get');
-Route::post('transaksi-keluar', 'Api\TransaksiKeluarController@create');
-Route::put('transaksi-keluar/{id}', 'Api\TransaksiKeluarController@update');
-Route::delete('transaksi-keluar/{id}', 'Api\TransaksiKeluarController@delete');
+    // TRANSAKSI MASUK
+    Route::get('transaksi-masuk', 'Api\TransaksiMasukController@getAll');
+    Route::get('transaksi-masuk/{id}', 'Api\TransaksiMasukController@get');
+    Route::post('transaksi-masuk', 'Api\TransaksiMasukController@create');
+    Route::put('transaksi-masuk/{id}', 'Api\TransaksiMasukController@update');
+    Route::delete('transaksi-masuk/{id}', 'Api\TransaksiMasukController@delete');
 
+    Route::put('transaksi-masuk-photos/{id}', 'Api\TransaksiMasukController@deleteBuktiTransfer');
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    Route::get('transaksi-masuk-kategori', 'Api\TransaksiMasukKategoriController@getDataList');
 
+    // TRANSAKSI KELUAR
+    Route::get('transaksi-keluar', 'Api\TransaksiKeluarController@getAll');
+    Route::get('transaksi-keluar/{id}', 'Api\TransaksiKeluarController@get');
+    Route::post('transaksi-keluar', 'Api\TransaksiKeluarController@create');
+    Route::put('transaksi-keluar/{id}', 'Api\TransaksiKeluarController@update');
+    Route::delete('transaksi-keluar/{id}', 'Api\TransaksiKeluarController@delete');
 
+    Route::get('transaksi-keluar-kategori', 'Api\TransaksiKeluarKategoriController@getDataList');
+
+    // KOS FASILITAS
+    Route::get('kos-fasilitas', 'Api\KosFasilitasController@getAll');
 });
+
+// Route::get('trs-generate-pdf', 'Api\TransaksiMasukExportController@generatePDF');
+
+// EXPORT
+Route::get('export/transaksi-masuk', 'Api\TransaksiMasukExportController@generatePDF');
+Route::get('export/transaksi-keluar', 'Api\TransaksiKeluarExportController@generatePDF');
+Route::get('export/transaksi-semua', 'Api\TransaksiAllExportController@generatePDF');
