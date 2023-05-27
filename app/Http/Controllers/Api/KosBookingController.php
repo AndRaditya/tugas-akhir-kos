@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use App\Http\Controllers\Api\KamarController;
 use App\Http\Controllers\Api\TransaksiMasukController;
+use App\Http\Controllers\Api\NotificationController;
 
 class KosBookingController extends Controller
 {
@@ -27,14 +28,16 @@ class KosBookingController extends Controller
     private $kamarService;
     private $kamarController;
     private $transaksiMasukController;
+    private $notificationController;
 
-    public function __construct(KosBookingService $kosBookingService, NumberGeneratorService $numberGeneratorService, KamarService $kamarService, KamarController $kamarController, TransaksiMasukController $transaksiMasukController)
+    public function __construct(KosBookingService $kosBookingService, NumberGeneratorService $numberGeneratorService, KamarService $kamarService, KamarController $kamarController, TransaksiMasukController $transaksiMasukController, NotificationController $notificationController)
     {
         $this->kosBookingService = $kosBookingService;
         $this->kamarService = $kamarService;
         $this->kamarController = $kamarController;
         $this->numberGeneratorService = $numberGeneratorService;
         $this->transaksiMasukController = $transaksiMasukController;
+        $this->notificationController = $notificationController;
     }
 
     public function getAll()
@@ -165,6 +168,13 @@ class KosBookingController extends Controller
                 $this->kosBookingService->insertBuktiTransfer($bukti_transfer, $kosBookingQuery, $data['kode']);
             }
 
+            $notification_data = [];
+            $notification_data['role_id'] = '1';
+            $notification_data['message_title'] = 'Kost Catleya Pesanan Baru';
+            $notification_data['message_body'] = 'Terdapat Pesanan Baru';
+
+            $this->notificationController->sendNotification($notification_data);
+
             return ResponseHelper::create($kosBookingQuery);
         });
     }
@@ -176,11 +186,13 @@ class KosBookingController extends Controller
             $kamar_olds = $request['kamar'];
             $user_id = $request['user']['id'];
             $transaksi_masuks = $request['transaksi_masuk'];
+            $user = $request['user'];
 
             $bukti_transfer = $request['bukti_transfer'];
             $request = $request->only(Schema::getColumnListing('kos_bookings'));
             $request['updated_at'] = now();
             $request['kos_bukti_transfer_id'] = $bukti_transfer['id'];
+
 
             if($kamar_olds){
                 foreach($kamar_olds as $kamar_old){
@@ -206,10 +218,25 @@ class KosBookingController extends Controller
 
                     $this->createTransaksiByBooking($id, $request, $bukti_transfer, $nomor_kamar, $nama_user, $nomor, $kamar_id['id']);
                 }
-
                 $request['kamar_id'] = $kamar_id['id'];
             }
+
             $container = $this->kosBookingService->update($id, $request);
+
+            $notification_data = [];
+            $notification_data['id'] = $user['id'];
+            $notification_data['role_id'] = $user['roles_id'];
+            if($request['status'] == 'Terkonfirmasi'){
+                $notification_data['message_title'] = 'Pesanan Dikonfirmasi';
+                $notification_data['message_body'] = 'Pesanan Anda Telah Dikonfirmasi, Mohon tunggu respon pengelola melalui WhatsApp';
+            }
+            else if($request['status'] == 'Dibatalkan'){
+                $notification_data['message_title'] = 'Pesanan Dibatalkan';
+                $notification_data['message_body'] = 'Pesanan Anda Dibatalkan, Mohon tunggu respon pengelola melalui WhatsApp';
+            }
+
+            $this->notificationController->sendNotification($notification_data);
+
             return ResponseHelper::put($container);
         });
     }

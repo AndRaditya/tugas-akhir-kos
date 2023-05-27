@@ -42,6 +42,8 @@ class SendResetPasswordEmail
         $resetPassword->save();
         if(env('APP_ENV') == 'local'){
             $url = env('app_url') . ':8082';
+        }else{
+            $url = 'https://kost-catleya.space/#';
         }
 
         Mail::to($event->user->email)->send(new ResetPasswordMail($event->user, $plainPassword, $url));

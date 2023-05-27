@@ -10,14 +10,16 @@ use App\Models\User;
 
 class NotificationController extends Controller
 {
-    public function sendNotification(Request $request)
+    public function sendNotification($data)
     {
-        $id = $request->id;
-        $role_id = $request->role_id;
-        $message_title = $request->message_title;
-        $message_body = $request->message_body;
+        if(count($data)>3){
+            $id = $data['id'];
+        }
+        $role_id = $data['role_id'];
+        $message_title = $data['message_title'];
+        $message_body = $data['message_body'];
         
-        if($id){
+        if(count($data)>3){
             $firebaseToken = User::where('id', $id)
                             ->where('roles_id', $role_id)
                             ->whereNotNull('firebase_token')
@@ -28,7 +30,8 @@ class NotificationController extends Controller
             ->pluck('firebase_token')->all();
         }
 
-        $SERVER_API_KEY = env('FIREBASE_SERVER_KEY');
+        // $SERVER_API_KEY = env('FIREBASE_SERVER_KEY');
+        $SERVER_API_KEY = "AAAANFXaaRU:APA91bHKN84-5BjM8vGx5T22PH1ThU99HYV_9kUoSys3UhZJqjhis5jEqliqDXfZup_liTn3TD2sxgL6EIovOnaR3ZDwNpdocXp_9wbO6hSz49H0cyFQgkNeFz6SRwqf5dZ1hpqyA_vY";
   
         if($firebaseToken){
             $data = [
@@ -60,6 +63,8 @@ class NotificationController extends Controller
             $data['message'] = 'Firebase Token Tidak Ditemukan';
             return ResponseHelper::error($data);
         }
-    }
 
+        error_log($response);
+        dd($response);
+    }
 }
