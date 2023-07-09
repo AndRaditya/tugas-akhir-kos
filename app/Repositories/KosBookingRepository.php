@@ -39,7 +39,7 @@ class KosBookingRepository implements Repository
         return $this->kosBookingModel->where('users_id',$user_id)
                     ->with('user')
                     ->with('kamar')
-                    ->orderByRaw("FIELD(status , 'Menunggu Konfirmasi Pengelola', 'Terkonfirmasi', 'Dibatalkan') ASC")
+                    // ->orderByRaw("FIELD(status , 'Menunggu Konfirmasi Pengelola', 'Terkonfirmasi', 'Dibatalkan') ASC")
                     ->orderBy('date', 'DESC')
                     ->get();
     }
@@ -78,15 +78,9 @@ class KosBookingRepository implements Repository
 
     public function searchPaginate($keyword, $user_id){
         if($user_id){
-            $container = $this->kosBookingModel
-                        ->where('users_id', $user_id)
-                        ->with('user', 'kamar')
-                        ->orWhereHas('user', function ($q) use ($keyword){
-                            $q->where('name', "like", '%' . $keyword . '%');
-                        })
-                        ->orWhereHas('kamar', function ($q) use ($keyword){
-                            $q->where('number', "like", '%' . $keyword . '%');
-                        })
+            $container = $this->kosBookingModel->with('user', 'kamar')->where('users_id', $user_id);
+
+            $container = $container
                         ->where(function ($q) use ($keyword){
                             $q->where('kode', "like", "%" . $keyword . "%");
                             $q->orWhere('date', "like", "%" . $keyword . "%");
@@ -97,7 +91,12 @@ class KosBookingRepository implements Repository
                             $q->orWhere('status', "like", "%" . $keyword . "%");
                             $q->orWhere('total_price', "like", "%" . $keyword . "%");
                         })
-                        ->orderByRaw("FIELD(status , 'Menunggu Konfirmasi Pengelola', 'Terkonfirmasi', 'Dibatalkan') ASC")
+                        ->orWhereHas('user', function ($q) use ($keyword){
+                            $q->where('name', "like", '%' . $keyword . '%');
+                        })
+                        ->orWhereHas('kamar', function ($q) use ($keyword){
+                            $q->where('number', "like", '%' . $keyword . '%');
+                        })
                         ->orderBy('date', 'DESC')
                         ->get();
         }else{
@@ -123,7 +122,6 @@ class KosBookingRepository implements Repository
                         ->orderBy('date', 'DESC')
                         ->get();
         }
-
         return $container;        
     }
 

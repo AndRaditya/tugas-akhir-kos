@@ -58,12 +58,14 @@ class TransaksiMasukController extends Controller
             $kategori_name = $request['kategori_name'];
             $transaksi_masuk_kategori_id = TransaksiMasukKategori::where('name', $kategori_name)->select('id')->first();
 
-            $kos_booking_id = KosBooking::where('kode', $request['nomor_booking'])->select('id')->first();
+            if($request['nomor_booking']){
+                $kos_booking_id = KosBooking::where('kode', $request['nomor_booking'])->select('id')->first();
+                $data['kos_booking_id'] = $kos_booking_id->id;
+            }
 
             $data = $request->only(Schema::getColumnListing('transaksi_masuks'));
             $data['no'] = $this->numberGeneratorService->generateNumber('TRSIN');
             $data['transaksi_masuk_kategori_id'] = $transaksi_masuk_kategori_id->id;
-            $data['kos_booking_id'] = $kos_booking_id->id;
             
             $trsMasukQuery = $this->transaksiMasukService->create($data);
 
@@ -105,8 +107,9 @@ class TransaksiMasukController extends Controller
         return DB::transaction(function () use ($id, $request) {
             $kategori_name = $request['kategori_name'];
             $transaksi_masuk_kategori_id = TransaksiMasukKategori::where('name', $kategori_name)->select('id')->first();
-            $kos_booking_id = KosBooking::where('kode', $request['nomor_booking'])->select('id')->first();
-
+            if($request['nomor_booking']){
+                $kos_booking_id = KosBooking::where('kode', $request['nomor_booking'][0])->select('id')->first();
+            }
 
             if(!empty($request['bukti_transfer'])){
                 $bukti_transfer = $request['bukti_transfer'];
@@ -127,7 +130,9 @@ class TransaksiMasukController extends Controller
             $request = $request->only(Schema::getColumnListing('transaksi_masuks'));
             $request['transaksi_masuk_kategori_id'] = $transaksi_masuk_kategori_id->id;
             $request['updated_at'] = now();
-            $request['kos_booking_id'] = $kos_booking_id->id;
+            if($kos_booking_id){
+                $request['kos_booking_id'] = $kos_booking_id->id;
+            }
 
 
             $container = $this->transaksiMasukService->update($id, $request);

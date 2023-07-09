@@ -30,7 +30,6 @@ class NotificationController extends Controller
             ->pluck('firebase_token')->all();
         }
 
-        // $SERVER_API_KEY = env('FIREBASE_SERVER_KEY');
         $SERVER_API_KEY = "AAAANFXaaRU:APA91bHKN84-5BjM8vGx5T22PH1ThU99HYV_9kUoSys3UhZJqjhis5jEqliqDXfZup_liTn3TD2sxgL6EIovOnaR3ZDwNpdocXp_9wbO6hSz49H0cyFQgkNeFz6SRwqf5dZ1hpqyA_vY";
   
         if($firebaseToken){
@@ -63,8 +62,5 @@ class NotificationController extends Controller
             $data['message'] = 'Firebase Token Tidak Ditemukan';
             return ResponseHelper::error($data);
         }
-
-        error_log($response);
-        dd($response);
     }
 }

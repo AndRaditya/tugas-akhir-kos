@@ -80,7 +80,7 @@ class KosBookingController extends Controller
 
     public function searchPaginate(Request $request){
         $keyword = @$request->keyword;
-        $user_id = @$request->user_id;
+        $user_id = @$request->users_id;
 
         $data = $this->kosBookingService->searchPaginate($keyword, $user_id);
         return $data;
@@ -154,12 +154,9 @@ class KosBookingController extends Controller
             $total_kamar = $data['total_kamar'];
             $tanggal_selesai = $tanggal_mulai->addMonths($total_bulan);
             
-            $harga_utama = 1500000;
-            $total_harga = $harga_utama * $total_bulan * $total_kamar;
-
+            $data['date'] = Carbon::now();
             $data['tanggal_selesai'] = $tanggal_selesai;
             $data['status'] = "Menunggu Konfirmasi Pengelola";
-            $data['total_price'] = $total_harga;
             $data['kode'] = $this->numberGeneratorService->generateNumber('BOOK');
 
             $kosBookingQuery = $this->kosBookingService->create($data);

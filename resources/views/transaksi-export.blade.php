@@ -39,18 +39,18 @@
     </style>
 </head>
 <body>
-    <p class="title">Semua Transaksi</p>
+    <p class="title">Laporan Harian Semua Transaksi
+    </p>
     <p class="sub-title">Rentang Tanggal: {{ $date_mulai }} &ndash; {{ $date_selesai }}</p>
     <br>
     <p class="table-title">Transaksi Masuk</p>
-    @if(!$data_masuk->isEmpty())
+    {{-- @if(!$data_masuk->isEmpty()) --}}
+    @if(count($data_masuk) > 0)
         <table class='table table-sm table-bordered'>
             <thead>
                 <tr>
-                    <th>No</th>
                     <th>Tanggal</th>
-                    <th>Kamar</th>
-                    <th>Deskripsi</th>
+                    <th>Total Transaksi</th>
                     <th>Nilai</th>
                     <th>Biaya Tambahan</th>
                     <th>Total Nilai</th>
@@ -59,26 +59,18 @@
             <tbody>
                 @foreach($data_masuk as $doc_masuk)
                 <tr>
-                    <td>{{ $doc_masuk->no }}</td>
-                    <td>{{ $doc_masuk->tanggal }}</td>
-                    <td>{{ $doc_masuk->nomor_kamar }}</td>
-                    <td>{{ $doc_masuk->desc }}</td>
-                    <td>Rp{{ number_format($doc_masuk->nilai, 0,",",".") }}</td>
-                    @forelse($doc_masuk->biaya_tambahan as $biaya_tambahan)
-                        @foreach($doc_masuk->biaya_tambahan as $biaya)
-                            <td>{{ $biaya->name }}, {{ $biaya->desc }}, Rp{{ number_format($biaya->nilai, 0,",",".") }}</td>
-                        @endforeach
-                    @empty
-                        <td>&ndash;</td>
-                    @endforelse
-                    <td>Rp{{ number_format($doc_masuk->total_nilai, 0,",",".") }}</td>
+                    <td>{{ $doc_masuk['tanggal'] }}</td>
+                    <td>{{ $doc_masuk['total_transaksi'] }}</td>
+                    <td>Rp{{ number_format($doc_masuk['nilai'], 0,",",".") }}</td>
+                    <td>Rp{{ number_format($doc_masuk['biaya_tambahan'], 0,",",".") }}</td>
+                    <td>Rp{{ number_format($doc_masuk['total_nilai'], 0,",",".") }}</td>
                 </tr>
                 @endforeach
             </tbody>
             <tfoot>
                 <tr rowspan="2">
-                    <th colspan="5" >Total</th>
-                    <th colspan="2" >Rp{{ number_format($total_harga_masuk, 0,",",".") }}</th>
+                    <th colspan="4" >Total</th>
+                    <th colspan="1" >Rp{{ number_format($total_harga_masuk, 0,",",".") }}</th>
                 </tr>
             </tfoot>
         </table>
@@ -92,31 +84,29 @@
     <hr>
     <br>
     <p class="table-title">Transaksi Keluar</p>
-    @if(!$data_keluar->isEmpty())
+    {{-- @if(!$data_keluar->isEmpty()) --}}
+    @if(count($data_keluar) > 0)
         <table class='table table-sm table-bordered'>
             <thead>
                 <tr>
-                    <th>No</th>
                     <th>Tanggal</th>
-                    <th>Deskripsi</th>
+                    <th>Total Transaksi</th>
                     <th>Nilai</th>
-
                 </tr>
             </thead>
             <tbody>
                 @foreach($data_keluar as $doc_keluar)
                 <tr>
-                    <td>{{ $doc_keluar->no }}</td>
-                    <td>{{ $doc_keluar->tanggal }}</td>
-                    <td>{{ $doc_keluar->desc }}</td>
-                    <td>Rp{{ number_format($doc_keluar->nilai, 0,",",".") }}</td>
+                    <td>{{ $doc_keluar['tanggal'] }}</td>
+                    <td>{{ $doc_keluar['total_transaksi'] }}</td>
+                    <td>Rp{{ number_format($doc_keluar['nilai'], 0,",",".") }}</td>
                 </tr>
                 @endforeach
             </tbody>
             <tfoot>
                 <tr rowspan="2">
                     <th colspan="2" >Total</th>
-                    <th colspan="2" >Rp{{ number_format($total_harga_keluar, 0,",",".") }}</th>
+                    <th colspan="1" >Rp{{ number_format($total_harga_keluar, 0,",",".") }}</th>
                 </tr>
             </tfoot>
         </table>

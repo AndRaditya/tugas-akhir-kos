@@ -25,6 +25,10 @@
             color: #333;  /* old IE */
             background-color: #333;  /* Modern Browsers */
         }
+
+        th, td{
+            vertical-align: middle !important;
+        }
     </style>
 </head>
 <body>
@@ -54,6 +58,12 @@
                 </tr>
                 @endforeach
             </tbody>
+            <tfoot>
+                <tr rowspan="2">
+                    <th colspan="2" >Total</th>
+                    <th colspan="2" >Rp{{ number_format($total_harga, 0,",",".") }}</th>
+                </tr>
+            </tfoot>
         </table>
     @else
         <hr>

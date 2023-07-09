@@ -25,6 +25,10 @@
             color: #333;  /* old IE */
             background-color: #333;  /* Modern Browsers */
         }
+
+        th, td{
+            vertical-align: middle !important;
+        }
     </style>
 </head>
 <body>
@@ -39,11 +43,11 @@
                 <tr>
                     <th>No</th>
                     <th>Tanggal</th>
+                    <th>Kamar</th>
                     <th>Deskripsi</th>
                     <th>Nilai</th>
-                    <th>Total Nilai</th>
-                    <th>Nomor Kamar</th>
                     <th>Biaya Tambahan</th>
+                    <th>Total Nilai</th>
                 </tr>
             </thead>
             <tbody>
@@ -51,21 +55,26 @@
                 <tr>
                     <td>{{ $doc->no }}</td>
                     <td>{{ $doc->tanggal }}</td>
+                    <td>{{ $doc->nomor_kamar }}</td>
                     <td>{{ $doc->desc }}</td>
                     <td>Rp{{ number_format($doc->nilai, 0,",",".") }}</td>
-                    <td>Rp{{ number_format($doc->total_nilai, 0,",",".") }}</td>
-                    <td>{{ $doc->nomor_kamar }}</td>
-
                     @forelse($doc->biaya_tambahan as $biaya_tambahan)
                         @foreach($doc->biaya_tambahan as $biaya)
-                            <td>{{ $biaya->name }}, {{ $biaya->desc }}, Rp{{ number_format($biaya->nilai, 0,",",".") }}</td>
+                            <td>Rp{{ number_format($biaya->nilai, 0,",",".") }}</td>
                         @endforeach
                     @empty
                         <td>&ndash;</td>
                     @endforelse
+                    <td>Rp{{ number_format($doc->total_nilai, 0,",",".") }}</td>
                 </tr>
                 @endforeach
             </tbody>
+            <tfoot>
+                <tr rowspan="2">
+                    <th colspan="5" >Total</th>
+                    <th colspan="2" >Rp{{ number_format($total_harga, 0,",",".") }}</th>
+                </tr>
+            </tfoot>
         </table>
     @else
         <hr>

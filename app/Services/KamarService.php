@@ -52,7 +52,6 @@ class KamarService
     public function insertKamarPhotos($image, $kamar_id)
     {
         $folder = "kamar_photos/".$kamar_id;
-        // KamarPhotos::where('kamar_id', $kamar_id)->delete();
 
         $data['kamar_id'] = $kamar_id;
         $data['photo_path'] = $this->fileHandlerService->storage($image['image_url'], $folder);

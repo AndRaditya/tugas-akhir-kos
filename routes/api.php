@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 //USER
 Route::post('login', 'Api\UserController@login');
 Route::post('register', 'Api\UserController@create');
+Route::get('logout', 'Api\UserController@logout');
 
 
 // KOS
@@ -40,7 +41,6 @@ Route::group(['middleware' => ['auth.redis']], function () {
     Route::put('users/{id}', 'Api\UserController@update');
     Route::put('users', 'Api\UserController@changePassword');
     Route::post('users-firebase', 'Api\UserController@getFirebaseToken');
-    Route::get('logout', 'Api\UserController@logout');
 
 
     // SEND NOTIFICATION
@@ -117,3 +117,4 @@ Route::group(['middleware' => ['auth.redis']], function () {
 Route::get('export/transaksi-masuk', 'Api\TransaksiMasukExportController@generatePDF');
 Route::get('export/transaksi-keluar', 'Api\TransaksiKeluarExportController@generatePDF');
 Route::get('export/transaksi-semua', 'Api\TransaksiAllExportController@generatePDF');
+Route::get('export/transaksi-report', 'Api\TransaksiAllExportController@generateLaporanPDF');

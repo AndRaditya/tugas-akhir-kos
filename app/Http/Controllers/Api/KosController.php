@@ -77,7 +77,6 @@ class KosController extends Controller
             $request = $request->only(Schema::getColumnListing('kos'));
             $request['updated_at'] = now();
 
-
             $container = $this->kosService->update($id, $request);
 
             return ResponseHelper::put($container);

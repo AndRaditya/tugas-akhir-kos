@@ -9,6 +9,7 @@ class TransaksiMasuk extends Model
 {
     use HasFactory;
     protected $guarded = ["id"];
+    protected $dates = ['tanggal'];
 
     public function transaksi_masuk_kategori()
     {

@@ -28,6 +28,10 @@ class TransaksiKeluarExportController extends Controller
         $docs = $this->transaksiKeluarModel
                 ->whereBetween('tanggal', [$start_date, $end_date])
                 ->get();
+
+        foreach($docs as $doc){
+            $total_harga = $doc->sum('nilai');
+        }         
        
         $tanggal_mulai = Carbon::parse($start_date)->format('d-m-Y');
         $tanggal_selesai = Carbon::parse($end_date)->format('d-m-Y');
@@ -36,13 +40,11 @@ class TransaksiKeluarExportController extends Controller
             'data' => $docs,
             'date_mulai' => $tanggal_mulai,
             'date_selesai' => $tanggal_selesai,
+            'total_harga' => $total_harga,
         ];
 
         $pdf = PDF::loadView('transaksi-keluar', $datas);
         $pdf->setPaper('A4', 'landscape');
-        // return $pdf->output();
         return $pdf->download('Document.pdf');   //untuk download pdf
-        // return $pdf->stream('Document.pdf');    //untuk preview pdf
-        
     }
 }

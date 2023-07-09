@@ -136,8 +136,8 @@ class UserController extends Controller
 
     public function putData($id, Request $request, $data)
     {
-        $data["id"] = $id;  //Do not change ID here!!!
-        unset($data["password"]); //Do not change password here!!!
+        $data["id"] = $id;  
+        unset($data["password"]); 
 
         unset($data["created_at"]);
         unset($data["deleted_at"]);

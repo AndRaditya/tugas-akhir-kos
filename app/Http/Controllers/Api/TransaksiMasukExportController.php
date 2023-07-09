@@ -14,7 +14,7 @@ use App;
 
 class TransaksiMasukExportController extends Controller
 {
-    CONST PRIMARY_KEY = 'id';
+    // CONST PRIMARY_KEY = 'id';
         
     private $transaksiMasukModel;
 
@@ -29,10 +29,19 @@ class TransaksiMasukExportController extends Controller
             $end_date = $request['tanggal_selesai'];
 
             $docs = $this->transaksiMasukModel
-            ->whereBetween('tanggal', [$start_date, $end_date])
+            ->whereDate('tanggal', '>=', $start_date)
+            ->whereDate('tanggal', '<=', $end_date)
             ->with('biaya_tambahan')
             ->get();
-            
+
+            $total_harga = 0;
+
+            foreach($docs as $doc){
+                if($doc['total_nilai']){
+                    $total_harga += $doc['total_nilai'];
+                }
+            }
+
             $tanggal_mulai = Carbon::parse($start_date)->format('d-m-Y');
             $tanggal_selesai = Carbon::parse($end_date)->format('d-m-Y');
             
@@ -40,14 +49,12 @@ class TransaksiMasukExportController extends Controller
                 'data' => $docs,
                 'date_mulai' => $tanggal_mulai,
                 'date_selesai' => $tanggal_selesai,
+                'total_harga' => $total_harga
             ];
             
             $pdf = PDF::loadView('transaksi-masuk', $datas);
             $pdf->setPaper('A4', 'landscape');
-            // return $pdf->output();
-            return $pdf->download('Document.pdf');   //untuk download pdf
-            // return $pdf->stream('Document.pdf');    //untuk preview pdf
+            return $pdf->download('Document.pdf');  
         });
-        
     }
 }
