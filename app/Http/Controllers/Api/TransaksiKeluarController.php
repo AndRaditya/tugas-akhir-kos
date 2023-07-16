@@ -78,5 +78,54 @@ class TransaksiKeluarController extends Controller
         $this->transaksiKeluarService->delete($id);
         return ResponseHelper::delete();
     }
+
+    public function getChart(Request $request){
+        $data_tahun = @$request->tahun;
+        $data_kategori = @$request->kategori;
+
+        $datas = $this->transaksiKeluarService->getChart($data_tahun, $data_kategori);
+        $months = array_keys($datas->toArray());
+
+        $trs_each_month = [];
+        
+        foreach($datas as $data){
+            array_push($trs_each_month, count($data));
+        }
+
+        $merged_trs_keluar = [];
+
+        for($i = 0; $i < count($datas); $i++){
+            $data_trs_keluar = [
+                'month' => $months[$i],
+                'total_trs' => $trs_each_month[$i],
+            ];
+            array_push($merged_trs_keluar, $data_trs_keluar);
+        }
+
+        $array_dummy = [];
+        
+        for($i = 1; $i < 13; $i++){
+            $array_dummy_trs = [
+                'month' => $i,
+                'total_trs' => 0,
+            ];
+            array_push($array_dummy, $array_dummy_trs);
+        }
+        
+        for($i = 0; $i < count($array_dummy); $i++){
+            foreach($merged_trs_keluar as $merged){
+                if($merged['month'] == $array_dummy[$i]['month']){
+                    $array_dummy[$i]['total_trs'] = $merged['total_trs'];
+                }
+            }
+        }
+
+        $trs_all_month = [];
+        foreach($array_dummy as $array){
+            array_push( $trs_all_month, $array['total_trs']);
+        }
+
+        return $trs_all_month;
+    }
  
 }

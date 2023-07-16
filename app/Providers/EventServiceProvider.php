@@ -21,6 +21,9 @@ class EventServiceProvider extends ServiceProvider
         "App\Events\ForgotPassword" => [
             "App\Listeners\SendResetPasswordEmail"
         ],
+        "App\Events\SendInvoice" => [
+            "App\Listeners\SendInvoiceEmail"
+        ],
     ];
 
     /**

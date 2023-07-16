@@ -32,4 +32,8 @@ class TransaksiKeluarService
     public function create($data) {        
         return $this->transaksiKeluarRepository->create($data);
     }
+
+    public function getChart($tahun, $kategori){
+        return $this->transaksiKeluarRepository->getChart($tahun, $kategori);
+    }
 }

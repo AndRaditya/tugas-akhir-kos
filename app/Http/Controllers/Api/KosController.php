@@ -77,6 +77,17 @@ class KosController extends Controller
             $request = $request->only(Schema::getColumnListing('kos'));
             $request['updated_at'] = now();
 
+            $this->kamarSpesifikasiController->deleteSelected($id);
+            $this->kosFasilitasController->deleteSelected($id);
+            
+            foreach($kamarSpecs as $kamarSpec){
+                $this->kamarSpesifikasiController->create($kamarSpec, $id);
+            } 
+            
+            foreach($fasilitas as $eachFasilitas){
+                $this->kosFasilitasController->create($eachFasilitas, $id);
+            } 
+
             $container = $this->kosService->update($id, $request);
 
             return ResponseHelper::put($container);

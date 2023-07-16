@@ -54,4 +54,8 @@ class TransaksiMasukService
             ->where('photo_path', $photo_path)
             ->delete();
     }
+
+    public function getChart($tahun, $kategori){
+        return $this->transaksiMasukRepository->getChart($tahun, $kategori);
+    }
 }

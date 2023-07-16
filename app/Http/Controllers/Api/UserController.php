@@ -13,17 +13,20 @@ use App\Helpers\ResponseHelper;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
+use App\Services\FileHandlerService;
 
 class UserController extends Controller
 {
     
     private $userService;
     private $authenticationService;
+    private $fileHandlerService;
 
-    public function __construct(AuthenticationService $authenticationService, UserService $userService)
+    public function __construct(AuthenticationService $authenticationService, UserService $userService, FileHandlerService $fileHandlerService)
     {
         $this->userService = $userService;
         $this->authenticationService = $authenticationService;
+        $this->fileHandlerService = $fileHandlerService;
 
     }
 
@@ -112,7 +115,10 @@ class UserController extends Controller
 
     public function create(request $request){
         return DB::transaction(function () use ($request){
+            $foto_ktp = $request['foto_ktp'];
+
             $data = $request->only(Schema::getColumnListing('users'));
+            $data['photo_path'] = $this->createFotoKTP($foto_ktp, $data['email']);
             $hashPassword = Hash::make($data['password']);
             $data['password'] = $hashPassword;
             $data['roles_id'] = 2;
@@ -121,9 +127,21 @@ class UserController extends Controller
         });
     }
 
+    public function createFotoKTP($images, $email){
+        $folder = "foto_ktp/".$email;
+
+        $photo_path = $this->fileHandlerService->storage($images, $folder);
+
+        return $photo_path;
+    }
+
     public function update($id, Request $request)
     {
         return DB::transaction(function () use ($request, $id) {
+            if($request['foto_ktp']){
+                $request['photo_path'] = $this->createFotoKTP($request['foto_ktp'], $request['email']);
+            }
+            
             $result = $this->putData($id, $request, $request->only(Schema::getColumnListing('users')));
             
             $userData = $request->_session;

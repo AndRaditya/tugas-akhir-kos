@@ -33,6 +33,8 @@ Route::get('kamar-harga', 'Api\KamarController@getHargaKamar');
 Route::post('forgot-password', 'Api\UserController@forgotPassword');
 Route::get('forgot-password-view', 'Api\UserController@forgotPasswordView');
 
+Route::get('KosBookingController', 'Api\KosBookingController@viewInvoice');
+
 Route::group(['middleware' => ['auth.redis']], function () {
     
     Route::get('users/{id}', 'Api\UserController@get');
@@ -93,6 +95,7 @@ Route::group(['middleware' => ['auth.redis']], function () {
     Route::post('transaksi-masuk', 'Api\TransaksiMasukController@create');
     Route::put('transaksi-masuk/{id}', 'Api\TransaksiMasukController@update');
     Route::delete('transaksi-masuk/{id}', 'Api\TransaksiMasukController@delete');
+    Route::post('transaksi-masuk-chart', 'Api\TransaksiMasukController@getChart');
 
     Route::put('transaksi-masuk-photos/{id}', 'Api\TransaksiMasukController@deleteBuktiTransfer');
 
@@ -104,6 +107,7 @@ Route::group(['middleware' => ['auth.redis']], function () {
     Route::post('transaksi-keluar', 'Api\TransaksiKeluarController@create');
     Route::put('transaksi-keluar/{id}', 'Api\TransaksiKeluarController@update');
     Route::delete('transaksi-keluar/{id}', 'Api\TransaksiKeluarController@delete');
+    Route::post('transaksi-keluar-chart', 'Api\TransaksiKeluarController@getChart');
 
     Route::get('transaksi-keluar-kategori', 'Api\TransaksiKeluarKategoriController@getDataList');
 

@@ -41,4 +41,17 @@ class TransaksiKeluarRepository implements Repository
     {
         return $this->transaksiKeluarModel::where(self::PRIMARY_KEY, $id)->delete();
     }
+
+    public function getChart($tahun, $kategori){
+        return $this->transaksiKeluarModel
+                    ->whereYear('tanggal', $tahun)
+                    ->with('transaksi_keluar_kategori')
+                    ->whereHas('transaksi_keluar_kategori', function ($q) use ($kategori){
+                        $q->where('name', "like", '%' . $kategori . '%');
+                    })
+                    ->get()
+                    ->groupBy(function($item){
+                        return $item->tanggal->format('m');
+                    });
+    }
 }

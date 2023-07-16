@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\SendInvoice;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Helpers\ResponseHelper;
@@ -19,6 +20,7 @@ use App\Models\User;
 use App\Http\Controllers\Api\KamarController;
 use App\Http\Controllers\Api\TransaksiMasukController;
 use App\Http\Controllers\Api\NotificationController;
+use App\Models\KosBooking;
 
 class KosBookingController extends Controller
 {
@@ -156,7 +158,7 @@ class KosBookingController extends Controller
             
             $data['date'] = Carbon::now();
             $data['tanggal_selesai'] = $tanggal_selesai;
-            $data['status'] = "Menunggu Konfirmasi Pengelola";
+            $data['status'] = "Menunggu Konfirmasi Bukti Transfer";
             $data['kode'] = $this->numberGeneratorService->generateNumber('BOOK');
 
             $kosBookingQuery = $this->kosBookingService->create($data);
@@ -216,6 +218,7 @@ class KosBookingController extends Controller
                     $this->createTransaksiByBooking($id, $request, $bukti_transfer, $nomor_kamar, $nama_user, $nomor, $kamar_id['id']);
                 }
                 $request['kamar_id'] = $kamar_id['id'];
+                $this->sendInvoice($request, $nomor_kamar);
             }
 
             $container = $this->kosBookingService->update($id, $request);
@@ -262,6 +265,19 @@ class KosBookingController extends Controller
         $this->transaksiMasukController->updateBuktiBooking($id_trs_masuk, $id_bukti);
     }
 
+    public function sendInvoice($data, $nomor_kamar){
+        $kos_booking = KosBooking::where('id', $data['id'])->first();
+
+        $user = User::where("id", $data['users_id'])->first();
+
+        event(new SendInvoice($kos_booking, $user, $nomor_kamar));
+    }
+
+    public function viewInvoice(){
+        return view('InvoicePesananConfirm');
+    }
+
+    
     public function pembayaran($id, Request $request)
     {
         return DB::transaction(function () use ($id, $request) {

@@ -36,8 +36,7 @@ class TransaksiMasukController extends Controller
         return ResponseHelper::get($result);
     }
 
-    public function get($id)
-    {
+    public function get($id){
         $result = $this->transaksiMasukService->get($id);
 
         $trs_masuk_kategori_name = TransaksiMasukKategori::where('id', $result[0]['transaksi_masuk_kategori_id'])->select('name')->first();
@@ -161,6 +160,53 @@ class TransaksiMasukController extends Controller
         return ResponseHelper::delete();
     }
 
-    
+    public function getChart(Request $request){
+        $data_tahun = @$request->tahun;
+        $data_kategori = @$request->kategori;
+
+        $datas = $this->transaksiMasukService->getChart($data_tahun, $data_kategori);
+        $months = array_keys($datas->toArray());
+
+        $trs_each_month = [];
+        
+        foreach($datas as $data){
+            array_push($trs_each_month, count($data));
+        }
+
+        $merged_trs_masuk = [];
+
+        for($i = 0; $i < count($datas); $i++){
+            $data_trs_masuk = [
+                'month' => $months[$i],
+                'total_trs' => $trs_each_month[$i],
+            ];
+            array_push($merged_trs_masuk, $data_trs_masuk);
+        }
+
+        $array_dummy = [];
+        
+        for($i = 1; $i < 13; $i++){
+            $array_dummy_trs = [
+                'month' => $i,
+                'total_trs' => 0,
+            ];
+            array_push($array_dummy, $array_dummy_trs);
+        }
+        
+        for($i = 0; $i < count($array_dummy); $i++){
+            foreach($merged_trs_masuk as $merged){
+                if($merged['month'] == $array_dummy[$i]['month']){
+                    $array_dummy[$i]['total_trs'] = $merged['total_trs'];
+                }
+            }
+        }
+
+        $trs_all_month = [];
+        foreach($array_dummy as $array){
+            array_push( $trs_all_month, $array['total_trs']);
+        }
+
+        return $trs_all_month;
+    }
 
 }
